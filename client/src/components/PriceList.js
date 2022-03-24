@@ -4,9 +4,19 @@ import axios from "axios";
 
 
 function PriceList() {
+    const [buydata, setBuydata] = useState(0);
+    const buyApi = async() => {
+        const response = await axios.get("http://localhost:3001/api/buy")
+         setBuydata(response.data)
+    }
+
+    useEffect(() => {
+        buyApi()
+    },[]);
+    console.log(buydata)
     return(
         <ul className="list-none p-5">
-            <li className="">60000000</li>
+            <li className="">{buydata}</li>
             <li className="">59000000</li>
             <li className="">58000000</li>
             <li className="">57000000</li>
