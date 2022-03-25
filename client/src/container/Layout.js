@@ -5,7 +5,7 @@ import SellOrderform from "../components/SellOrderForm";
 import Signup from "../components/Signup";
 import Bank from "../components/Bank";
 import Withdraw from "../components/Withdraw";
-// 되돌리기
+import PriceList from "../components/PriceList";
 
 function Layout() {
     return (
@@ -23,6 +23,7 @@ function Layout() {
                         </div>
                         <div class="col-span-1">
                         <Signup />
+                        <PriceList />
                         </div>
                     </div>
 
