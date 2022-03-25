@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-// 되돌리기
 
 function PriceList() {
     const [buydata, setBuydata] = useState([]);
