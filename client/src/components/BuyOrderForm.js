@@ -27,6 +27,7 @@ function BuyOrderForm() {
         e.preventDefault();
         console.log(buyOrder);
         axios.post("http://localhost:3001/exchange/buy", buyOrder)
+        .then(alert("매수 주문 완료"))
 
     };
 

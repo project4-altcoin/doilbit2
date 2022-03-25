@@ -24,6 +24,7 @@ function SellOrderForm() {
         e.preventDefault();
         console.log("front sellorder: ", sellOrder);
         axios.post("http://localhost:3001/exchange/sell", sellOrder)
+        .then(alert("매도 주문 완료"))
     }
 
     useEffect(() => {

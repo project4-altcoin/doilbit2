@@ -21,7 +21,8 @@ exports.sellapi = async (req, res, next) => {
         for(let i = 0; i < 5; i++) {
             data.push(sell[i]);
         }
-        res.send(data)
+        const datas = data.reverse()
+        res.send(datas)
         } catch(err) {
         console.error(err);
 }

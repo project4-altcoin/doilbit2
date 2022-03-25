@@ -2,77 +2,80 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-
 function PriceList() {
     const [buydata, setBuydata] = useState([]);
+    const [selldata, setSelldata] = useState([]);
+
     const buyApi = async() => {
         const response = await axios.get("http://localhost:3001/exchange/buyapi")
          setBuydata(response.data)
+         
+    }
+    const sellApi = async() => {
+        const response = await axios.get("http://localhost:3001/exchange/sellapi")
+        setSelldata(response.data)
+         
     }
 
     useEffect(() => {
         buyApi()
+        sellApi()
     },[]);
 
-    const BD = JSON.stringify(buydata)
-    console.log(BD)
-    return(
-        // <ul className="list-none p-5">
-        //     <li className=""></li>
-        //     <li className="">59000000</li>
-        //     <li className="">58000000</li>
-        //     <li className="">57000000</li>
-        //     <li className="">56000000</li>
-        //     <li className="">55000000</li>
-        //     <li className="">54000000</li>
-        //     <li className="">53000000</li>
-        //     <li className="">52000000</li>
-        //     <li className="">51000000</li>
-        //     <li className="">50000000</li>
-        // </ul>
-        <table class="table-fixed">
-  <thead>
-    <tr>
-      <th>Song</th>
-      <th>Artist</th>
-      <th>Year</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-      <td>Malcolm Lockyer</td>
-      <td>1961</td>
-    </tr>
-    <tr>
-      <td>Witchy Woman</td>
-      <td>The Eagles</td>
-      <td>1972</td>
-    </tr>
-    <tr>
-      <td>Shining Star</td>
-      <td>Earth, Wind, and Fire</td>
-      <td>1975</td>
-    </tr>
-  </tbody>
-</table>
+    var buyquantity = buydata.map((row, index) => 
+    <div>
+        <td key={index}>{row.quantity}</td>
+        </div>
+            )
 
-        //rounded-lg shadow p-1
+    var sellquantity = selldata.map((row, index) => 
+    <div>
+        <td key={index}>{row.quantity}</td>
+        </div>
+            )
+
+    var buyprice = buydata.map((row, index) => 
+    <div>
+        <td key={index}>{row.price}</td>
+        </div>
+            )
+
+    var sellprice = selldata.map((row, index) => 
+    <div>
+        <td key={index}>{row.price}</td>
+        </div>
+            )
 
 
-        // <div className="bg-white rounded-lg shadow p-10">
-        //     <div className="bg-white rounded-lg shadow p-2">1000000000000000</div>
-        //     <div className="bg-white rounded-lg shadow p-2">2</div>
-        //     <div className="bg-white rounded-lg shadow p-2">3</div>
-        //     <div className="bg-white rounded-lg shadow p-2">4</div>
-        //     <div className="bg-white rounded-lg shadow p-2">5</div>
-        //     <div className="bg-white rounded-lg shadow p-2">6</div>
-        //     <div className="bg-white rounded-lg shadow p-2">7</div>
-        //     <div className="bg-white rounded-lg shadow p-2">8</div>
-        //     <div className="bg-white rounded-lg shadow p-2">9</div>
-        //     <div className="bg-white rounded-lg shadow p-2">10</div>
-        // </div>
-    )
+    return (
+        <>   
+        <h1 text-align="center">호가창</h1>
+        <br />        
+        <table class="relative border">
+        <thead>
+          <tr>
+            <th class="sticky top-0 px-6 py-3">수량</th>
+            <th class="sticky top-0 px-6 py-3">가격</th>
+            <th class="sticky top-0 px-6 py-3">수량</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y bg-blue-100">
+          <tr>
+            <td class="px-6 py-4 text-center">{sellquantity}</td>
+            <td class="px-6 py-4 text-center">{sellprice}</td>
+            <td></td>
+          </tr>
+          </tbody>
+        <tbody class="divide-y bg-red-100">
+          <tr>
+              <td></td>
+            <td class="px-6 py-4 text-center">{buyprice}</td>
+            <td class="px-6 py-4 text-center">{buyquantity}</td>
+          </tr>
+          </tbody>
+        </table>
+        </>
+        );  
 }
 
 
