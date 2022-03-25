@@ -1,7 +1,6 @@
 const buyOrder = require('../models/buyOrder');
 const sellOrder = require('../models/sellOrder');
 
-
 exports.buyapi = async (req, res, next) => {
     try{
         const buy = await buyOrder.find({}, {"_id":false, "price":true, "quantity":true}).sort({"price":-1})
