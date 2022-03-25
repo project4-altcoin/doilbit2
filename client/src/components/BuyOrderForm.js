@@ -37,7 +37,7 @@ function BuyOrderForm() {
     return (
 
                 <div class="flex items-center justify-center ">              
-                    <div class="bg-white rounded-lg shadow p-5">
+                    <div class="bg-white rounded-lg shadow p-5 bg">
                         <p class="text-gray-700 text-xl font-semibold">
                             <form class=""action="/exchange/buy" method="post">
                                 <label>수량: <input class="bg-green-400 text-black" type="text" name="quantity" value={quantity} onChange={handleChange}/></label>

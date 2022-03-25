@@ -42,16 +42,6 @@ bankSchema.pre('updateOne', function(next) {
     next();
 })
 
-
-
-bankSchema.statics.balance = async function(userId) {
-    const deposit = await this.findOne({ userId: userId }).select('deposit');
-    const withdraw = await this.findOne({ userId: userId }).select('withdraw');
-    return deposit.deposit - withdraw.withdraw;
-};
-
-
-
 bankSchema.statics.getBank = async function(userId) {
     const bank = await this.findOne({userId});
     return bank;
@@ -64,7 +54,8 @@ bankSchema.statics.getBankList = async function(userId) {
 
 
 bankSchema.statics.getBalance = async function(userId) {
-    const bank = await this.findOne({ userId });
+    const bank = await this.findOne({ userId })
+    console.log("return bank: ", bank);
     if (!bank) {
         return 0;
     }
@@ -135,15 +126,6 @@ bankSchema.statics.transfer = async function(fromUserId, toUserId, quantity) {
         throw err;
     }
 };
-
-
-
-bankSchema.methods.balance = async function() {
-    const deposit = await this.findOne({ userId: this.userId }).select('deposit');
-    const withdraw = await this.findOne({ userId: this.userId }).select('withdraw');
-    return deposit.deposit - withdraw.withdraw;
-};
-
 
 
 const Bank = mongoose.model('Bank', bankSchema);
