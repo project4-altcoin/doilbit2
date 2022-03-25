@@ -1,6 +1,7 @@
 import React from "react";
 import {useState, useEffect} from "react";
 import axios from "axios";
+// 되돌리기
 
 function BuyOrderForm() {
     // 임의의 유저아이디 -> 회원가입시 디비에 만들어짐
@@ -27,8 +28,6 @@ function BuyOrderForm() {
         e.preventDefault();
         console.log(buyOrder);
         axios.post("http://localhost:3001/exchange/buy", buyOrder)
-        .then(alert("매수 주문 완료"))
-
     };
 
     useEffect(() => {
@@ -37,8 +36,8 @@ function BuyOrderForm() {
     }, [buyOrder]);
 
     return (
-            <div class="relative top-60 flex flex-wrap justify-center">
-                <div class="">
+
+                <div class="flex items-center justify-center ">              
                     <div class="bg-white rounded-lg shadow p-5">
                         <p class="text-gray-700 text-xl font-semibold">
                             <form class=""action="/exchange/buy" method="post">
@@ -49,7 +48,7 @@ function BuyOrderForm() {
                         </p>
                     </div>
                 </div>
-            </div>
+            
     )
 }
 
