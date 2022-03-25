@@ -26,7 +26,8 @@ function BuyOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(buyOrder);
-        axios.post("/exchange/buy", buyOrder)
+        axios.post("http://localhost:3001/exchange/buy", buyOrder)
+
     };
 
     useEffect(() => {

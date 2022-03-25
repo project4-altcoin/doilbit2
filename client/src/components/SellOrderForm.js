@@ -23,7 +23,7 @@ function SellOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("front sellorder: ", sellOrder);
-        axios.post("/exchange/sell", sellOrder)
+        axios.post("http://localhost:3001/exchange/sell", sellOrder)
     }
 
     useEffect(() => {

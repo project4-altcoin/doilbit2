@@ -23,7 +23,8 @@ function Bank() {
     const handleSubmit =  (e) => {
         e.preventDefault();
         console.log("front : ", bankMoney);
-        axios.post("/exchange/bank", bankMoney)
+        axios.post("http://localhost:3001/exchange/bank", bankMoney)
+
     }
 
     useEffect(() => {

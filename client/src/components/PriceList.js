@@ -4,30 +4,58 @@ import axios from "axios";
 
 
 function PriceList() {
-    const [buydata, setBuydata] = useState(0);
+    const [buydata, setBuydata] = useState([]);
     const buyApi = async() => {
-        const response = await axios.get("http://localhost:3001/api/buy")
+        const response = await axios.get("http://localhost:3001/exchange/buyapi")
          setBuydata(response.data)
     }
 
     useEffect(() => {
         buyApi()
     },[]);
-    console.log(buydata)
+
+    const BD = JSON.stringify(buydata)
+    console.log(BD)
     return(
-        <ul className="list-none p-5">
-            <li className="">{buydata}</li>
-            <li className="">59000000</li>
-            <li className="">58000000</li>
-            <li className="">57000000</li>
-            <li className="">56000000</li>
-            <li className="">55000000</li>
-            <li className="">54000000</li>
-            <li className="">53000000</li>
-            <li className="">52000000</li>
-            <li className="">51000000</li>
-            <li className="">50000000</li>
-        </ul>
+        // <ul className="list-none p-5">
+        //     <li className=""></li>
+        //     <li className="">59000000</li>
+        //     <li className="">58000000</li>
+        //     <li className="">57000000</li>
+        //     <li className="">56000000</li>
+        //     <li className="">55000000</li>
+        //     <li className="">54000000</li>
+        //     <li className="">53000000</li>
+        //     <li className="">52000000</li>
+        //     <li className="">51000000</li>
+        //     <li className="">50000000</li>
+        // </ul>
+        <table class="table-fixed">
+  <thead>
+    <tr>
+      <th>Song</th>
+      <th>Artist</th>
+      <th>Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+      <td>Malcolm Lockyer</td>
+      <td>1961</td>
+    </tr>
+    <tr>
+      <td>Witchy Woman</td>
+      <td>The Eagles</td>
+      <td>1972</td>
+    </tr>
+    <tr>
+      <td>Shining Star</td>
+      <td>Earth, Wind, and Fire</td>
+      <td>1975</td>
+    </tr>
+  </tbody>
+</table>
 
         //rounded-lg shadow p-1
 
