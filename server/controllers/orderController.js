@@ -3,6 +3,7 @@ const sellOrder = require('../models/sellOrder');
 const bank = require('../models/bank');
 const User = require('../models/userModel');
 
+
 exports.buy = (req, res, next) => {
     buyOrder.create(req.body)
         .then(order => {
@@ -72,6 +73,23 @@ exports.withdraw = (req, res, next) => {
         );
 }
 
+exports.balance = (req, res, next) => {
+    bank.getBalance(req.body.userId)
+        .then(quantity => {
+            res.status(201).json({
+                status: 'success',
+                quantity
+            });
+        }
+        )
+        .catch(err => {
+            res.status(400).json({
+                status: 'fail',
+                message: err
+            });
+        }
+        );
+}
 
 
 
