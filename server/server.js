@@ -18,8 +18,6 @@ const apiV3 = process.env.API_URL_V3
 const apiV2 = process.env.API_URL_V2
 const Orders = require('./routes/Orders');
 
-
-
 app.use(cors(corsOptions));
 app.use(express.json()); 
 app.use(logger);
@@ -27,14 +25,9 @@ app.use(errorHandler);
 app.use(morgan('dev'));
 app.use(`${apiV4}`, Orders)
 
-
-
-
 const connectDB = require('./config/db');
 connectDB();
 const { db } = require("./models/BasicApi");               // import the db variable
-
-
 
 const server = app.listen(
     PORT,

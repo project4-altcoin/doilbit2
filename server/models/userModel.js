@@ -3,11 +3,11 @@ const bcrypt = require('bcryptjs');
 
 // name, email, password, password confirmation
 const userSchema = new mongoose.Schema({
-    name: {
+    userId: {
         type: String,
-        required: [true, "이름을 입력해주세요."],
-        minlength: [3, "이름은 3자 이상이어야 합니다."],
-        maxlength: [40, "이름은 40자 이하로 입력해주세요."]
+        required: [true, "ID를 입력해주세요."],
+        minlength: [3, "ID는 3자 이상이어야 합니다."],
+        maxlength: [40, "ID는 40자 이하로 입력해주세요."]
     },
     email: {
         type: String,
@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema({
                 return el === this.password;
             },
             message: "비밀번호가 일치하지 않습니다."  
+    },
+    balance: {
+        type: Number,
+        default: 0
     },
     createdAt: {
         type: Date,
