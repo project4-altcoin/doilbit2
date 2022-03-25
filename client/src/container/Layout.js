@@ -2,23 +2,30 @@ import React from "react";
 import Nav from "../components/Nav";
 import BuyOrderForm from "../components/BuyOrderForm";
 import SellOrderform from "../components/SellOrderForm";
-import NewsFeed from "../components/NewsFeed";
+import Signup from "../components/Signup";
 import Bank from "../components/Bank";
-import PriceList from "../components/PriceList";
+import Withdraw from "../components/Withdraw";
 
 function Layout() {
     return (
-        <div>
-            <Nav />
-            <div class="relative top-80 justify-center flex flex-wrap">
-                
-                <BuyOrderForm />
-                {/* <PriceList /> */}
-                <SellOrderform />
-                
-            </div>
-            <Bank />
-            <PriceList />
+        <div class="">
+            <header>
+                <Nav /> 
+            </header>
+                <body class="min-h-screen flex justify-center place-content-start place-item-start pt-16 ">
+                    <div class="container mx-auto">   
+                        <div class="grid grid-cols-3 md:grid-cols-3 gap-4 p-5 ">        
+                            <BuyOrderForm />
+                            <SellOrderform />
+                            <Bank />       
+                            <Withdraw />
+                        </div>
+                        <div class="col-span-1">
+                        <Signup />
+                        </div>
+                    </div>
+
+            </body>
         </div>
     )
 }
