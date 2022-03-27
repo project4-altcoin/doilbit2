@@ -37,13 +37,19 @@ function BuyOrderForm() {
 
     return (
 
-                <div class="flex items-center justify-center ">              
+                <div class="flex items-center justify-center ">             
                     <div class="bg-white rounded-lg shadow p-5 bg">
                         <p class="text-gray-700 text-xl font-semibold">
+                        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                            매 수
+                            </div>
+                            <br />
                             <form class=""action="/exchange/buy" method="post">
-                                <label>수량: <input class="bg-green-400 text-black" type="text" name="quantity" value={quantity} onChange={handleChange}/></label>
-                                <label>가격: <input class="bg-green-400 text-black" type="text" name="price" value={price} onChange={handleChange}/></label>
-                                <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>매수</button>
+                                <label>수량: <input class="bg-green-400 text-black" type="text" name="quantity" value={quantity} onChange={handleChange}/></label><br /><br />
+                                <label>가격: <input class="bg-green-400 text-black" type="text" name="price" value={price} onChange={handleChange}/></label> <br /><br />
+                                <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                                <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>매수하기</button>
+                                </div>
                             </form>
                         </p>
                     </div>

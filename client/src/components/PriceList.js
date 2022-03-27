@@ -49,8 +49,9 @@ function PriceList() {
 
 
     return (
-        <>   
-        <h1 text-align="center">호가창</h1>
+        <> 
+        <div> 
+        <p class="text-gray-700 text-xl font-semibold">요들코인 호가창</p>
         <br />        
         <table class="relative border">
         <thead>
@@ -75,6 +76,7 @@ function PriceList() {
           </tr>
           </tbody>
         </table>
+        </div>
         </>
         );  
 }

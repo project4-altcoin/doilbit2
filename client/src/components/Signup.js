@@ -56,16 +56,18 @@ const Signup = () => {
                 <div>
                     <form action="/signup" method="post">
                         <p class="text-gray-700 text-xl font-semibold">
-                        <h1>Signup</h1>
+                        <h1>Signup</h1><br />
                             <label>Username: <input class="bg-green-400 text-black" type="text" name="userId" value={userId} onChange={handleChange}/></label>
-                            <br></br>
+                            <br /><br />
                             <label>Password: <input class="bg-green-400 text-black" type="text" name="password" value={password} onChange={handleChange}/></label>
-                            <br></br>
+                            <br /><br />
                             <label>passwordConfirmation: <input class="bg-green-400 text-black" type="text" name="passwordConfirmation" value={passwordConfirmation} onChange={handleChange}/></label>
-                            <br></br>
+                            <br /><br />
                             <label>Email: <input class="bg-green-400 text-black" type="text" name="email" value={email} onChange={handleChange}/></label>
-                            <br></br>
+                            <br /><br />
+                            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                             <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>Signup</button>
+                            </div>
                         </p>
                     </form>
                    
