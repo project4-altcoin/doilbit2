@@ -7,6 +7,7 @@ import Bank from "../components/Bank";
 import Withdraw from "../components/Withdraw";
 import Balance from "../components/Balance";
 
+
 import PriceList from "../components/PriceList";
 
 function Layout() {
@@ -20,16 +21,18 @@ function Layout() {
                         <div class="grid grid-cols-5 md:grid-cols-5 gap-4 p-5 ">        
                             <BuyOrderForm />
                             <SellOrderform />
-                            <Bank />       
-                            <Withdraw />
+                            <Bank />  
+                            <Withdraw /> 
                             <Balance />
-                        </div>
+                            </div>
+                            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '50vh'}}>                           
+                            <PriceList />
+                            </div>                                                                             
                         <div class="col-span-1">
-                        <Signup />
-                        <PriceList />
+                        <Signup />                        
                         </div>
                     </div>
-
+                 
             </body>
         </div>
     )
