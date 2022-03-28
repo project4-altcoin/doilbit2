@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/orderController");
 const listController = require("../controllers/listController")
-// 되돌리기
+// orders 되돌리기
 
 router.post('/buy', orderController.buy);
 router.post('/sell', orderController.sell);
