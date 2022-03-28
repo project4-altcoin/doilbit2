@@ -9,6 +9,7 @@ exports.trans = (req, res, next) => {
                 status: 'success',
                 order                
             });
+            console.log(req.body.buyprice)
         })
         .catch(err => {
             res.status(400).json({
