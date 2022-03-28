@@ -25,25 +25,25 @@ function PriceList() {
 
     var buyquantity = buydata.map((row, index) => 
     <div>
-        <td key={index}>{row.quantity}</td>
+        <td key={index}>{row.buyquantity}</td>
         </div>
             )
 
     var sellquantity = selldata.map((row, index) => 
     <div>
-        <td key={index}>{row.quantity}</td>
+        <td key={index}>{row.sellquantity}</td>
         </div>
             )
 
     var buyprice = buydata.map((row, index) => 
     <div>
-        <td key={index}>{row.price}</td>
+        <td key={index}>{row.buyprice}</td>
         </div>
             )
 
     var sellprice = selldata.map((row, index) => 
     <div>
-        <td key={index}>{row.price}</td>
+        <td key={index}>{row.sellprice}</td>
         </div>
             )
 
