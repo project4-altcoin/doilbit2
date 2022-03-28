@@ -8,8 +8,8 @@ function SellOrderForm() {
     const userId = "623943499d5531c4f1bcb8a8";
 
     const [sellOrder, setSellOrder] = useState({
-        price: "",
-        quantity: "",
+        sellprice: "",
+        sellquantity: "",
         userId: userId
     });
     const [price, setPrice] = useState("");
@@ -24,12 +24,12 @@ function SellOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("front sellorder: ", sellOrder);
-        axios.post("http://localhost:3001/exchange/sell", sellOrder)
+        axios.post("http://localhost:3001/exchange/trans", sellOrder)
     }
 
     useEffect(() => {
-        setPrice(sellOrder.price);
-        setQuantity(sellOrder.quantity);
+        setPrice(sellOrder.sellprice);
+        setQuantity(sellOrder.sellquantity);
     }, [sellOrder]);
 
     return (
@@ -42,8 +42,8 @@ function SellOrderForm() {
                         </div>
                         <br />
                         <form class="" action="/exchange/sell" method="post">
-                            <label>수량: <input class="bg-green-400 text-black" type="text" name="quantity" value={quantity} onChange={handleChange} /></label><br /><br />
-                            <label>가격: <input class="bg-green-400 text-black" type="text" name="price" value={price} onChange={handleChange} /></label><br /><br />
+                            <label>수량: <input class="bg-green-400 text-black" type="text" name="sellquantity" value={quantity} onChange={handleChange} /></label><br /><br />
+                            <label>가격: <input class="bg-green-400 text-black" type="text" name="sellprice" value={price} onChange={handleChange} /></label><br /><br />
                             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                             <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>매도하기</button>
                             </div>

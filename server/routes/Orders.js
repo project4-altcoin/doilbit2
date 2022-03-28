@@ -4,6 +4,8 @@ const orderController = require("../controllers/orderController");
 const listController = require("../controllers/listController")
 // orders 되돌리기
 
+
+router.post("/trans", orderController.trans)
 router.post('/buy', orderController.buy);
 router.post('/sell', orderController.sell);
 router.post('/bank', orderController.deposit);
