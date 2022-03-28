@@ -4,6 +4,7 @@ const bank = require('../models/bank');
 const User = require('../models/userModel');
 
 
+
 exports.buy = (req, res, next) => {
     buyOrder.create(req.body)
         .then(order => {
