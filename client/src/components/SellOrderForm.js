@@ -7,7 +7,7 @@ function SellOrderForm() {
     // 임의의 유저아이디 -> 회원가입시 디비에 만들어짐
     const userId = "623943499d5531c4f1bcb8a8";
 
-    const [sellOrder, setSellOrder] = useState({
+    const [ordersAll, setOrdersAll] = useState({
         sellprice: "",
         sellquantity: "",
         userId: userId
@@ -16,21 +16,21 @@ function SellOrderForm() {
     const [quantity, setQuantity] = useState("");
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setSellOrder({
-            ...sellOrder,
+        setOrdersAll({
+            ...ordersAll,
             [name]: value
         });
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("front sellorder: ", sellOrder);
-        axios.post("http://localhost:3001/exchange/trans", sellOrder)
+        console.log("front sellorder: ", ordersAll);
+        axios.post("http://localhost:3001/exchange/trans", ordersAll)
     }
 
     useEffect(() => {
-        setPrice(sellOrder.sellprice);
-        setQuantity(sellOrder.sellquantity);
-    }, [sellOrder]);
+        setPrice(ordersAll.sellprice);
+        setQuantity(ordersAll.sellquantity);
+    }, [ordersAll]);
 
     return (
         

@@ -2,14 +2,14 @@ const buyOrder = require('../models/buyOrder');
 const sellOrder = require('../models/sellOrder');
 const bank = require('../models/bank');
 const User = require('../models/userModel');
-const Orders = require("../models/ordersAll")
+const OrdersAll = require("../models/ordersAll")
 
 exports.trans = (req, res, next) => {
-    Orders.create(req.body)
-        .then(order => {
+    OrdersAll.create(req.body)
+        .then(order => {         
             res.status(201).json({
                 status: 'success',
-                order
+                order                
             });
         })
         .catch(err => {
