@@ -32,13 +32,12 @@ exports.trans = async(req, res, next) => {
            await OrdersAll.create(req.body) // 가격 150 수량 150
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
             await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
-        }
-        
-    
-    //    else if(buyquantityarr - req.body.sellquantity > 0) {
-    //        //매수 디비 데이터 갱신
-    //    }
-    // }
+        } if(buyquantityarr - req.body.sellquantity > 0) {
+           //매수 디비 데이터 갱신          
+           await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}})
+          
+       }
+
     // OrdersAll.create(req.body)
     //     .then(order => {         
     //         res.status(201).json({
