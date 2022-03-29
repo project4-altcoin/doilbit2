@@ -13,12 +13,14 @@ exports.trans = async(req, res, next) => {
     let sellpricearr = [];
     let sellquantityarr = 0;
     
+    // 매도 데이터 추출
     for(let i = 0; i < selldata.length; i++) {
         if(selldata[i].sellprice != undefined) {
             selldataarr.push(selldata[i])
         }
     }
 
+    // 매수 데이터 추출
     for(let i = 0; i < buydata.length; i++) {
         if(buydata[i].buyprice != undefined) {
             buydataarr.push(buydata[i])
@@ -32,12 +34,13 @@ exports.trans = async(req, res, next) => {
         if(data[i].buyprice !== undefined) buypricearr.push(data[i].buyprice)
     }
   
-   var maxbuyprice = Math.max(...buypricearr) //DB 안에 존재하는 매수가격의 최고가  
+    // 매수 최고가
+    var maxbuyprice = Math.max(...buypricearr) //DB 안에 존재하는 매수가격의 최고가  
 
     // 매수 최고가 수량 구하기
     for(i = 0; i < data.length; i++){
         if( data[i].buyprice == maxbuyprice){
-            buyquantityarr += data[i].buyquantity
+            buyquantityarr += data[i].buyquantity // 매수 최고가의 수량
         }
     }
 
@@ -51,26 +54,23 @@ exports.trans = async(req, res, next) => {
     
     for(i = 0; i < data.length; i++){
         if( data[i].sellprice == minsellprice){
-            sellquantityarr += data[i].sellquantity
+            sellquantityarr += data[i].sellquantity //매도 최저가의 수량
         }
     }
 
-    console.log(sellquantityarr)
     // 매도 가격중복 수량 중첩
     for(let i = 0; i < sellpricearr.length; i++) {       
-    if(req.body.sellprice == selldataarr[i].sellprice) {
-        let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
-        await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+        if(req.body.sellprice == selldataarr[i].sellprice) {
+            let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
+            await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+        }
     }
-}
     
 
     //매수 가격중복 수량 중첩
     for(let i = 0; i < buypricearr.length; i++) {       
         if(req.body.buyprice == buydataarr[i].buyprice) {
-            console.log(buydataarr[i].buyprice)
             let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
-            console.log(resetbuyquantity)
             await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
         }
     }
@@ -85,8 +85,7 @@ exports.trans = async(req, res, next) => {
            // 매도 매수 디비 데이터 둘다 삭제          
             await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
         }       
-        else if(req.body.sellquantity - buyquantityarr > 0) {
-        console.log("==================================== success!!==============================")           //매도 디비 데이터 갱신
+        else if(req.body.sellquantity - buyquantityarr > 0) {        //매도 디비 데이터 갱신
             await OrdersAll.create(req.body) // 가격 150 수량 150
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
             await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
@@ -97,7 +96,6 @@ exports.trans = async(req, res, next) => {
     }
     // 매수로직 시작(매도 최저가 필요)
      else if(req.body.buyprice == minsellprice){
-
         if(sellquantityarr - req.body.buyquantity == 0 ) {
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
         } else if(req.body.buyquantity - sellquantityarr > 0){
@@ -108,13 +106,11 @@ exports.trans = async(req, res, next) => {
             //매수 디비 데이터 갱신          
             await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})         
         }
-
     }
     
     // 매수 최고가보다 낮은 가격으로 매도시 매수최고가 수량 차감
 
     if(req.body.sellprice < maxbuyprice) {
-        console.log("sucesss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}})     
     }
 
@@ -122,9 +118,7 @@ exports.trans = async(req, res, next) => {
      // 매도 최저가보다 높은 가격으로 매수시 매도최고가 수량 차감
 
      if(req.body.buyprice > minsellprice) {
-        console.log("sucesss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})
-       
+        await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}}) 
     }
 
 
@@ -133,19 +127,19 @@ exports.trans = async(req, res, next) => {
 
     //위 로직들에 걸리지 않을때 실행
     if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
-    OrdersAll.create(req.body)
-        .then(order => {         
-            res.status(201).json({
-                status: 'success',
-                order                
+        OrdersAll.create(req.body)
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+                });
             });
-        })
-        .catch(err => {
-            res.status(400).json({
-                status: 'fail',
-                message: err
-            });
-        });
     }
 }
 
