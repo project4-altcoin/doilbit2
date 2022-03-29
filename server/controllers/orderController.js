@@ -3,44 +3,30 @@ const User = require('../models/userModel');
 const OrdersAll = require("../models/ordersAll")
 const axios = require('axios')
 
-exports.trans = (req, res, next) => {
-    // // 매수 가격 데이터
-    // console.log("what? : ", req.body.buyprice)
-    // // 매수 로직
-    // // 매수 데이터 가격 == 매도 데이터 check
+exports.trans = async(req, res, next) => {
+    let data = await OrdersAll.find({})
+    let buyquantityarr = 0;
+    let buypricearr = [];
+    // 매수 최고가 구하기
+    for(i = 0; i < data.length; i++) {
+        if(data[i].buyprice !== undefined) buypricearr.push(data[i].buyprice)
+    }
+  
+   var maxbuyprice = Math.max(...buypricearr) //DB 안에 존재하는 매수가격의 최고가  
 
-    // var dbselldtarr = [];
-    
-    // var dbsellprice = async() => {
-    //     try {
-    //         let dbsellraw = await axios.get("http://localhost:3001/exchange/sellapi")
-    //         // console.log(dbsellraw.data)
-    //         for(let i = 0; i < dbsellraw.data.length; i ++){
-    //             // console.log("sellprice: ", dbsellraw.data[i].sellprice)
-    //             dbselldtarr.push(dbsellraw.data[i].sellprice)
-    //             console.log("sellprice array : ", dbselldtarr)
-    //         }
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
+    // 매수 최고가 수량 구하기
+    for(i = 0; i < data.length; i++){
+        if( data[i].buyprice == maxbuyprice){
+            buyquantityarr += data[i].buyquantity
+        }
+    }
 
-    // dbsellprice();
-    // console.log("what about here : ", dbselldtarr)
+    console.log("buyquantityarr : ", buyquantityarr); //DB 안에 존재하는 매수가격의 최고가 수량
 
-    // // function dbsellpriceE () {
-    // //     return new Promise(function(resolve){
-    // //         let result = dbsellprice()
-    // //         resolve(result)
-    // //     })
-    // // }  
 
-    // // dbsellpriceE().then(function(dt){console.log(dt.data)});
+    if(req.body.sellprice == maxbuyprice) {
 
-    // // console.log("dbsellprice : ", dbsellprice)
-    // // if(req.body.buyprice == ){
-
-    // // }
+    }
     OrdersAll.create(req.body)
         .then(order => {    
             res.status(201).json({
