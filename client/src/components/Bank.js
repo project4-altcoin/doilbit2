@@ -27,6 +27,7 @@ function Bank() {
         axios.post("http://localhost:3001/exchange/bank", bankMoney).then(res => {
             console.log(res);
             const socket= new WebSocket('ws://49.50.172.129:8081');
+            alert('입금이 완료되었습니다.')
         })
         
         
