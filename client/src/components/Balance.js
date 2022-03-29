@@ -1,21 +1,37 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 function Balance() {
     const [balance, setBalance] = useState(0);
     const userId = "623943499d5531c4f1bcb8a8";
+    
+            
+    // const ws = useRef(null);
 
     useEffect(() => {
+        // ws.current.onmessage = function (event) {
+        //     console.log(event.data);
+        //     setBalance(event.data)
+        //     };
+        const socket= new WebSocket('ws://127.0.0.1:8081');
+        socket.onmessage=(e)=>{ 
+            
+            setBalance(e.data)
+            console.log(e.data)
+        }
+        
+            
+            
+    //    axios.post("http://localhost:3001/exchange/balance", { userId })
+    //         .then(res => {
+    //             console.log(res);
+    //             setBalance(res.data.quantity);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
 
-       axios.post("http://localhost:3001/exchange/balance", { userId })
-            .then(res => {
-                console.log(res);
-                setBalance(res.data.quantity);
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }, []);
 
     return (

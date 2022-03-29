@@ -18,6 +18,10 @@ const apiV3 = process.env.API_URL_V3
 const apiV2 = process.env.API_URL_V2
 const Orders = require('./routes/Orders');
 
+const websocket = require("./websocket")
+websocket();
+
+
 app.use(cors(corsOptions));
 app.use(express.json()); 
 app.use(logger);
