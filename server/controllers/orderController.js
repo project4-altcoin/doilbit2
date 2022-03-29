@@ -55,6 +55,7 @@ exports.trans = async(req, res, next) => {
         }
     }
 
+    console.log(sellquantityarr)
     // 매도 가격중복 수량 중첩
     for(let i = 0; i < sellpricearr.length; i++) {       
     if(req.body.sellprice == selldataarr[i].sellprice) {
@@ -109,25 +110,43 @@ exports.trans = async(req, res, next) => {
         }
 
     }
+    
+    // 매수 최고가보다 낮은 가격으로 매도시 매수최고가 수량 차감
+
+    if(req.body.sellprice < maxbuyprice) {
+        console.log("sucesss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}})     
+    }
+
+
+     // 매도 최저가보다 높은 가격으로 매수시 매도최고가 수량 차감
+
+     if(req.body.buyprice > minsellprice) {
+        console.log("sucesss!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})
+       
+    }
 
 
 
 
 
-    // OrdersAll.create(req.body)
-    //     .then(order => {         
-    //         res.status(201).json({
-    //             status: 'success',
-    //             order                
-    //         });
-    //     })
-    //     .catch(err => {
-    //         res.status(400).json({
-    //             status: 'fail',
-    //             message: err
-    //         });
-    //     });
-
+    //위 로직들에 걸리지 않을때 실행
+    if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
+    OrdersAll.create(req.body)
+        .then(order => {         
+            res.status(201).json({
+                status: 'success',
+                order                
+            });
+        })
+        .catch(err => {
+            res.status(400).json({
+                status: 'fail',
+                message: err
+            });
+        });
+    }
 }
 
 exports.deposit = (req, res, next) => {
