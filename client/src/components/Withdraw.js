@@ -28,6 +28,7 @@ function Withdraw() {
         console.log("front : ", withdrawMoney);
         axios.post("http://localhost:3001/exchange/withdraw", withdrawMoney).then(res => {
             console.log(res);
+            const socket= new WebSocket('ws://49.50.172.129:8081');
         })
     }
 

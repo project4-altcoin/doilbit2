@@ -14,7 +14,7 @@ function Balance() {
         //     console.log(event.data);
         //     setBalance(event.data)
         //     };
-        const socket= new WebSocket('ws://127.0.0.1:8081');
+        const socket= new WebSocket('ws://49.50.172.129:8081');
         socket.onmessage=(e)=>{ 
             
             setBalance(e.data)
