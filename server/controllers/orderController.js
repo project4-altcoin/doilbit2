@@ -23,29 +23,36 @@ exports.trans = async(req, res, next) => {
 
     console.log("buyquantityarr : ", buyquantityarr); //DB 안에 존재하는 매수가격의 최고가 수량
 
-
     if(req.body.sellprice == maxbuyprice) {
-
+       if(buyquantityarr - req.body.sellquantity == 0) {
+           // 매도 매수 디비 데이터 둘다 삭제
+           console.log("==================================== success!!==============================")
+            await OrdersAll.deleteOne({buyquantity : buyquantityarr}) }       
+    //    } else if(buyquantityarr - req.body.sellquantity > 0) {
+    //        //매도 디비 데이터 갱신
+    //    } else if(buyquantityarr - req.body.sellquantity < 0) {
+    //        //매수 디비 데이터 갱신
+    //    }
     }
-    OrdersAll.create(req.body)
-        .then(order => {    
-            res.status(201).json({
-                status: 'success',
-                order                
-            });
-        })
-        .catch(err => {
-            res.status(400).json({
-                status: 'fail',
-                message: err
-            });
-        });
+    // OrdersAll.create(req.body)
+    //     .then(order => {         
+    //         res.status(201).json({
+    //             status: 'success',
+    //             order                
+    //         });
+    //     })
+    //     .catch(err => {
+    //         res.status(400).json({
+    //             status: 'fail',
+    //             message: err
+    //         });
+    //     });
 
 }
 
 exports.deposit = (req, res, next) => {
     bank.deposit(req.body.userId, req.body.quantity)
-        .then(quantity => {
+        .then(quantity => {ㄴ
             res.status(201).json({
                 status: 'success',
                 quantity
