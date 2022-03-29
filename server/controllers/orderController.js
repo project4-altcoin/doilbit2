@@ -4,12 +4,26 @@ const OrdersAll = require("../models/ordersAll")
 
 exports.trans = async(req, res, next) => {
     let data = await OrdersAll.find({})
+    let selldata = await OrdersAll.find({}, {"sellprice":true, "sellquantity":true})
+    let selldataarr = [];
+    let buydata = await OrdersAll.find({}, {"buyprice":true, "buyquantity":true})
+    let buydataarr = [];
     let buyquantityarr = 0;
     let buypricearr = [];
     let sellpricearr = [];
     let sellquantityarr = 0;
+    
+    for(let i = 0; i < selldata.length; i++) {
+        if(selldata[i].sellprice != undefined) {
+            selldataarr.push(selldata[i])
+        }
+    }
 
-
+    for(let i = 0; i < buydata.length; i++) {
+        if(buydata[i].buyprice != undefined) {
+            buydataarr.push(buydata[i])
+        }
+    }
 
 
 
@@ -40,8 +54,28 @@ exports.trans = async(req, res, next) => {
             sellquantityarr += data[i].sellquantity
         }
     }
-    //매도 최저가의 수량
-    console.log("sellquantityarr : ", sellquantityarr)
+
+    // 매도 가격중복 수량 중첩
+    for(let i = 0; i < sellpricearr.length; i++) {       
+    if(req.body.sellprice == selldataarr[i].sellprice) {
+        let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
+        await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+    }
+}
+    
+
+    //매수 가격중복 수량 중첩
+    for(let i = 0; i < buypricearr.length; i++) {       
+        if(req.body.buyprice == buydataarr[i].buyprice) {
+            console.log(buydataarr[i].buyprice)
+            let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
+            console.log(resetbuyquantity)
+            await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+        }
+    }
+
+
+
 
     
     // 매도로직 시작(매수 최고가 필요)
