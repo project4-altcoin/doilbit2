@@ -25,15 +25,20 @@ exports.trans = async(req, res, next) => {
 
     if(req.body.sellprice == maxbuyprice) {
        if(buyquantityarr - req.body.sellquantity == 0) {
-           // 매도 매수 디비 데이터 둘다 삭제
-           console.log("==================================== success!!==============================")
+           // 매도 매수 디비 데이터 둘다 삭제          
             await OrdersAll.deleteOne({buyquantity : buyquantityarr}) }       
-    //    } else if(buyquantityarr - req.body.sellquantity > 0) {
-    //        //매도 디비 데이터 갱신
-    //    } else if(buyquantityarr - req.body.sellquantity < 0) {
+       } if(req.body.sellquantity - buyquantityarr > 0) {
+        console.log("==================================== success!!==============================")           //매도 디비 데이터 갱신
+           await OrdersAll.create(req.body) // 가격 150 수량 150
+            await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
+            await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
+        }
+        
+    
+    //    else if(buyquantityarr - req.body.sellquantity > 0) {
     //        //매수 디비 데이터 갱신
     //    }
-    }
+    // }
     // OrdersAll.create(req.body)
     //     .then(order => {         
     //         res.status(201).json({
