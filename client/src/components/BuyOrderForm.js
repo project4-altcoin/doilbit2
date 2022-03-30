@@ -28,6 +28,7 @@ function BuyOrderForm() {
         e.preventDefault();
         console.log(buyOrder);
         axios.post("http://localhost:3001/exchange/trans", buyOrder)
+        
     };
 
     useEffect(() => {

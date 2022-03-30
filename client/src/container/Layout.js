@@ -6,9 +6,10 @@ import Signup from "../components/Signup";
 import Bank from "../components/Bank";
 import Withdraw from "../components/Withdraw";
 import Balance from "../components/Balance";
-import Mypage from "../components/Mypage";
-import Login from "../components/Login";
+import Concludelist from "../components/Concludelist";
 import PriceList from "../components/PriceList";
+import YdcDetail from "../components/YdcDetail"
+
 
 function Layout() {
     return (
@@ -25,13 +26,17 @@ function Layout() {
                             <Withdraw /> 
                             <Balance />
                             </div>
-                            <div class="gap-24" style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '50vh'}}>                           
+                            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '70vh', }}>  
+                            <YdcDetail />
+                            <div style={{margin:"120px"}}>                  
                             <PriceList />
-
-                        <Signup />     
-                        <Login />                   
-                            </div>                                                                            
-                        <div class="col-span-container mx-auto">
+                            </div>
+                            <div style={{margin:"100px"}}>
+                                <Concludelist />
+                        </div> 
+                    </div>                                                          
+                        <div class="col-span-1">
+                        <Signup />                        
                         </div>
                     </div>
                  
