@@ -22,11 +22,11 @@ const cookieParser = require('cookie-parser');
 
 const balancesocket = require("./socket/balancesocket")
 //const pricesocket = require("./socket/pricesocket")
-//const concludesocket = require("./socket/concludesocket")
+const concludesocket = require("./socket/concludesocket")
 
 balancesocket();
 //pricesocket();
-//concludesocket();
+concludesocket();
 
 app.use(cookieParser())
 app.use(cors(corsOptions));
