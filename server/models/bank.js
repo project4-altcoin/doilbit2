@@ -68,7 +68,7 @@ bankSchema.statics.deposit = async function(userId, quantity) {
             userId: userId
         });
         if (bank) {
-            const deposit = Number(bank.quantity ) + Number(quantity);
+            const deposit = Number(bank.quantity) + Number(quantity);
             bank.quantity =  String(deposit);
             await bank.save();
         } else {

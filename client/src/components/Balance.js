@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function Balance({}) {
-
     const [balance, setBalance] = useState(0);
     const userId = "623943499d5531c4f1bcb8a8";
 
@@ -25,9 +24,9 @@ function Balance({}) {
 
     useEffect(() => {
         
-        const socket= new WebSocket('ws://49.50.172.129:8081');
+        //const socket= new WebSocket('ws://49.50.172.129:8081');
+        const socket= new WebSocket('ws://127.0.0.1:8081');
         socket.onmessage=(e)=>{ 
-            
             setBalance(e.data)
             console.log(e.data)
         }
@@ -54,7 +53,6 @@ function Balance({}) {
             </p>
             </div>
         </div>
-
     );
 }
 export default Balance;
