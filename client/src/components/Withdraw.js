@@ -28,6 +28,8 @@ function Withdraw() {
         console.log("front : ", withdrawMoney);
         axios.post("http://localhost:3001/exchange/withdraw", withdrawMoney).then(res => {
             console.log(res);
+            const socket= new WebSocket('ws://127.0.0.1:8081');
+            alert('출금이 완료되었습니다.')
         })
     }
 

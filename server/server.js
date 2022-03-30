@@ -20,6 +20,14 @@ const Orders = require('./routes/Orders');
 const Users = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
 
+const balancesocket = require("./socket/balancesocket")
+//const pricesocket = require("./socket/pricesocket")
+const concludesocket = require("./socket/concludesocket")
+
+balancesocket();
+//pricesocket();
+concludesocket();
+
 app.use(cookieParser())
 app.use(cors(corsOptions));
 app.use(express.json()); 
