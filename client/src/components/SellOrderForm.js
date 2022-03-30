@@ -24,7 +24,13 @@ function SellOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("front sellorder: ", ordersAll);
-        axios.post("http://localhost:3001/exchange/trans", ordersAll)
+        axios.post("http://localhost:3001/exchange/trans", ordersAll).then( ()=>
+            {
+                const socket= new WebSocket('ws://127.0.0.1:8082');
+               
+            }
+            
+        )
     }
 
     useEffect(() => {
