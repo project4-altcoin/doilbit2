@@ -1,6 +1,7 @@
 const bank = require('../models/bank');
 const User = require('../models/userModel');
 const OrdersAll = require("../models/ordersAll")
+const concludeList = require("../models/concludelist")
 
 exports.trans = async(req, res, next) => {
     let data = await OrdersAll.find({})
@@ -58,60 +59,66 @@ exports.trans = async(req, res, next) => {
         }
     }
 
-    // 매도 가격중복 수량 중첩
-    for(let i = 0; i < sellpricearr.length; i++) {       
-        if(req.body.sellprice == selldataarr[i].sellprice) {
-            let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
-            await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+    //로직 실행 
+        // 매도 가격중복 수량 중첩
+        for(let i = 0; i < sellpricearr.length; i++) {       
+            if(req.body.sellprice == selldataarr[i].sellprice) {
+                let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
+                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})             
+            }
         }
-    }
+
+  
     
-
-    //매수 가격중복 수량 중첩
-    for(let i = 0; i < buypricearr.length; i++) {       
-        if(req.body.buyprice == buydataarr[i].buyprice) {
-            let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
-            await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+        //매수 가격중복 수량 중첩
+        for(let i = 0; i < buypricearr.length; i++) {       
+            if(req.body.buyprice == buydataarr[i].buyprice) {
+                let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
+                await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+            }
         }
-    }
-
-
-
-
     
     // 매도로직 시작(매수 최고가 필요)
     if(req.body.sellprice == maxbuyprice) {
         if(buyquantityarr - req.body.sellquantity == 0) {
            // 매도 매수 디비 데이터 둘다 삭제          
-            await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
+            await OrdersAll.deleteOne({buyquantity : buyquantityarr})
+            await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice}) 
         }       
         else if(req.body.sellquantity - buyquantityarr > 0) {        //매도 디비 데이터 갱신
             await OrdersAll.create(req.body) // 가격 150 수량 150
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
-            await OrdersAll.deleteOne({buyquantity : buyquantityarr}) 
+            await OrdersAll.deleteOne({buyquantity : buyquantityarr})
+            await concludeList.insertMany({"conquantity": buyquantityarr, "conprice": req.body.sellprice}) 
         } else if(buyquantityarr - req.body.sellquantity > 0) {
            //매수 디비 데이터 갱신          
-           await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}})         
+           await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
+           await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})        
        }
     }
     // 매수로직 시작(매도 최저가 필요)
      else if(req.body.buyprice == minsellprice){
         if(sellquantityarr - req.body.buyquantity == 0 ) {
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
+            await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})
         } else if(req.body.buyquantity - sellquantityarr > 0){
             await OrdersAll.create(req.body)
             await OrdersAll.updateOne({"buyquantity" : req.body.buyquantity }, {"$set" : {"buyquantity" :req.body.buyquantity - sellquantityarr}})
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
+            await concludeList.insertMany({"conquantity": sellquantityarr, "conprice": req.body.buyprice})
+
         } else if(sellquantityarr - req.body.buyquantity > 0) {
             //매수 디비 데이터 갱신          
-            await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})         
+            await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})
+            await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})        
         }
     }
     
     // 매수 최고가보다 낮은 가격으로 매도시 매수최고가 수량 차감
 
     if(req.body.sellprice < maxbuyprice) {
-        await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}})     
+        await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
+        await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": maxbuyprice})    
     }
 
 
@@ -119,14 +126,15 @@ exports.trans = async(req, res, next) => {
 
      if(req.body.buyprice > minsellprice) {
         await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}}) 
+        await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": minsellprice})
     }
 
+    console.log("sellpricearr : ", sellpricearr.includes(parseInt(req.body.sellprice)))
+    console.log(req.body.sellprice)
+    console.log(sellpricearr)
 
-
-
-
-    //위 로직들에 걸리지 않을때 실행
     if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
+        // if(sellpricearr.includes(parseInt(req.body.sellprice)) == false) {
         OrdersAll.create(req.body)
             .then(order => {         
                 res.status(201).json({
@@ -138,8 +146,8 @@ exports.trans = async(req, res, next) => {
                 res.status(400).json({
                     status: 'fail',
                     message: err
-                });
             });
+        });
     }
 }
 
