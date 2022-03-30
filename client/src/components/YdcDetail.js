@@ -41,7 +41,7 @@ function YdcDetail() {
 
 
     useEffect(() => {
-        const socket= new WebSocket('ws://127.0.0.1:8084');
+        const socket= new WebSocket('ws://49.50.172.129:8084');
         socket.onmessage=(e)=>{ 
             const detail = JSON.parse(e.data)
             setTquantity(detail.tq)

@@ -21,12 +21,12 @@ const Users = require('./routes/userRoutes');
 const cookieParser = require('cookie-parser');
 
 const balancesocket = require("./socket/balancesocket")
-// const pricesocket = require("./socket/pricesocket")
+const pricesocket = require("./socket/pricesocket")
 const concludesocket = require("./socket/concludesocket")
 const detailsocket = require("./socket/detailsocket")
 
 balancesocket();
-// pricesocket();
+pricesocket();
 concludesocket();
 detailsocket();
 

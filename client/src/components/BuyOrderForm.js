@@ -28,8 +28,9 @@ function BuyOrderForm() {
         e.preventDefault();
         console.log(buyOrder);
         axios.post("http://localhost:3001/exchange/trans", buyOrder).then(res =>{
-        const socket= new WebSocket('ws://127.0.0.1:8083');
-        const socket2= new WebSocket('ws://127.0.0.1:8084');
+        const socket1= new WebSocket('ws://49.50.172.129:8082');
+        const socket2= new WebSocket('ws://49.50.172.129:8083');
+        const socket3= new WebSocket('ws://49.50.172.129:8084');
 
         })
         
