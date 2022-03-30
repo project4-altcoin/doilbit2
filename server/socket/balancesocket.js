@@ -6,7 +6,7 @@ const socket = new WebSocket.Server({
 function getbalance() {
     const userId = "623943499d5531c4f1bcb8a8";
 
-        axios.post("http://localhost:3001/exchange/balance")
+        axios.post("http://localhost:3001/exchange/balance", { userId })
             .then(res => {
                 let balance = res.data.quantity;
                 socket.clients.forEach(e=> e.send(balance)) //연결된 client들에게 balance 뿌려줌
