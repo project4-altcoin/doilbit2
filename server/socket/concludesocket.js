@@ -5,8 +5,6 @@ const socket = new WebSocket.Server({
 })
 
 const concludesocket = async() => {
-        
-        
         await axios.get("http://localhost:3001/exchange/conclude")
         .then(res => {
             let con = res.data
@@ -18,12 +16,9 @@ const concludesocket = async() => {
 }
 
 socket.on('connection', (ws, req)=>{
-    
+    concludesocket();
 
     console.log("concludesocket에 client 접속")
-    ws.on("message", message => {
-        message.concludesocket();
-    })
 })
 
 module.exports = concludesocket

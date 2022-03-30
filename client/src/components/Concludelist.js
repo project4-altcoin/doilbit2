@@ -7,13 +7,13 @@ import axios from "axios";
 function Concludelist() {
   const [concludedata, setConcludedata] = useState([]);
 
-  const ConcludeApi = async() => {
-      const response = await axios.get("http://localhost:3001/exchange/conclude")
-       setConcludedata(response.data)  
-  }
+  // const ConcludeApi = async() => {
+  //     const response = await axios.get("http://localhost:3001/exchange/conclude")
+  //      setConcludedata(response.data)  
+  // }
 
   useEffect(() => {
-    ConcludeApi();
+    // ConcludeApi();
     const socket= new WebSocket('ws://127.0.0.1:8083');
       socket.onmessage=(e)=>{ 
           const con = JSON.parse(e.data)

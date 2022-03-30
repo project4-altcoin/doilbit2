@@ -79,8 +79,19 @@ exports.trans = async(req, res, next) => {
         if(buyquantityarr - req.body.sellquantity == 0) {
            // 매도 매수 디비 데이터 둘다 삭제          
             await OrdersAll.deleteOne({buyquantity : buyquantityarr})
-            await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice}) 
-        }       
+            await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+            });
+        })}  
         else if(req.body.sellquantity - buyquantityarr > 0) {        //매도 디비 데이터 갱신
             await OrdersAll.create(req.body) // 가격 150 수량 150
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
