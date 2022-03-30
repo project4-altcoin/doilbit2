@@ -137,7 +137,7 @@ exports.trans = async(req, res, next) => {
     console.log("req.body.buyprice : ", req.body.buyprice)
 
     // if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
-        if(sellpricearr.includes(parseInt(req.body.buyprice)) == false && buypricearr.includes(parseInt(req.body.buyprice)) == false) {
+        if(sellpricearr.includes(parseInt(req.body.buyprice)) == false && buypricearr.includes(parseInt(req.body.buyprice)) == false && sellpricearr.includes(parseInt(req.body.sellprice)) == false && buypricearr.includes(parseInt(req.body.sellprice)) == false) {
         OrdersAll.create(req.body)
             .then(order => {         
                 res.status(201).json({
@@ -151,7 +151,7 @@ exports.trans = async(req, res, next) => {
                     message: err
             });
         });
-    }
+    } 
 }
 
 exports.deposit = (req, res, next) => {
