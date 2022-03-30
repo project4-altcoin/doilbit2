@@ -8,32 +8,23 @@ const socket = new WebSocket.Server({
 const pricesocket = async() => {
       
     function buyApi() {
-    return axios.get("http://localhost:3001/exchange/buyapi")
+        return axios.get("http://localhost:3001/exchange/buyapi")
     }
     
     function sellApi() {
-    return axios.get("http://localhost:3001/exchange/sellapi")
+        return axios.get("http://localhost:3001/exchange/sellapi")
     }
 
         await axios
         .all([buyApi(), sellApi()]).then(
-        axios.spread((response1, response2) => {
-            JSON.stringify({"buy":response1.data, "sell":response2.data})
-            socket.clients.forEach(e=> e.send(JSON.stringify({"buy":response1.data, "sell":response2.data})))
+        axios.spread((res1, res2) => {
+            JSON.stringify({"buy":res1.data, "sell":res2.data})
+            socket.clients.forEach(e=> e.send(JSON.stringify({"buy":res1.data, "sell":res2.data})))
         })
     )
     .catch((err) => console.log(err));
 
-    // const buyApi = async() => {
-    //     const response = await axios.get("http://localhost:3001/exchange/buyapi")
-    //     .then()
-         
-    // }
-    // const sellApi = async() => {
-    //     const response = await axios.get("http://localhost:3001/exchange/sellapi")
-    //     setSelldata(response.data)
-        
-    // }
+    
 }
 
 socket.on('connection', (ws, req)=>{

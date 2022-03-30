@@ -7,21 +7,27 @@ function PriceList() {
     const [buydata, setBuydata] = useState([]);
     const [selldata, setSelldata] = useState([]);
 
+    // const buyApi = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/buyapi")
+    //      setBuydata(response.data)
+         
+    // }
+    // const sellApi = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/sellapi")
+    //     setSelldata(response.data)
+         
+    // }
 
-    const buyApi = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/buyapi")
-         setBuydata(response.data)
-         
-    }
-    const sellApi = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/sellapi")
-        setSelldata(response.data)
-         
-    }
+
 
     useEffect(() => {
-        buyApi()
-        sellApi()
+      const socket= new WebSocket('ws://127.0.0.1:8082');
+                socket.onmessage=(e)=>{ 
+                    const buyprice = JSON.parse(e.data).buy
+                    setBuydata(buyprice)
+                    const sellprice = JSON.parse(e.data).sell
+                    setSelldata(sellprice)
+                }
     },[]);
 
     var buyquantity = buydata.map((row, index) => 
@@ -47,6 +53,7 @@ function PriceList() {
         <td key={index}>{row.sellprice}</td>
         </div>
             )
+
 
     return (
         <> 
