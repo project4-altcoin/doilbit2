@@ -9,7 +9,7 @@ const concludesocket = async() => {
         await axios.get("http://localhost:3001/exchange/conclude")
         .then(res => {
             let con = res.data
-            console.log(con)
+            // console.log(con)
             socket.clients.forEach(e=> e.send(JSON.stringify(con)))
         })
         .catch((err) => console.log(err));

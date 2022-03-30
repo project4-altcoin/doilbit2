@@ -43,14 +43,46 @@ exports.login = async (req, res, next) => {
         });
     }
     // 3) If everything ok, send token to client
-    const token = signToken(user._id);
+    const token = await signToken(user._id);
     res.cookie('token', token, {
         expires: new Date(
             Date.now() + 1000 * 60 * 60 * 24 * 7
         ),
         httpOnly: true
-    });
+    }).catch(err => console.log(err));
     res.status(200).json({
         status: 'success'
     });
 }
+
+exports.isLoggedIn = asyncHandler(async (req, res, next) => {
+    const token = req.cookies.token;
+        if (!token) {
+            return next(new ErrorResponse('Not authenticated', 401));
+        }
+    
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+        const user = await User.findById(decoded._id);
+    
+        if (!user) {
+            return next(new ErrorResponse('Not authenticated', 401));
+        }
+    
+        req.user = user;
+        next();
+    });
+
+exports.logOut = asyncHandler(async (req, res, next) => {
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
+    });
+    res.status(200).json({
+        status: 'success',
+        data: {}
+    });
+    }
+);
+
+

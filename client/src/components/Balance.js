@@ -1,12 +1,28 @@
 import React from "react";
 import { useState, useEffect,  } from "react";
 
-function Balance() {
+function Balance({}) {
+
     const [balance, setBalance] = useState(0);
     const userId = "623943499d5531c4f1bcb8a8";
     
     //axios 부분을 서버쪽(websocket.js)로 넘겨주고 웹소켓 server에서 연결된 client들에게 뿌려준다
 
+    const api = async() => {
+        await axios.all([
+            axios.get('http://localhost:3001/api/v1/login'),
+            axios.get('http://localhost:3001/api/v1/logout')
+        ])
+        .then(axios.spread((login, logout) => {
+            console.log(login);
+            console.log(logout);
+        }
+        ))
+        .catch(err => {
+            console.log(err);
+        }
+        );
+    };
     useEffect(() => {
         
         const socket= new WebSocket('ws://127.0.0.1:8081');
@@ -15,7 +31,9 @@ function Balance() {
             setBalance(e.data)
             console.log(e.data)
         }
+        api();
     }, []);
+
 
     return (
         <div class="flex items-center justify-center bg-green-400">              

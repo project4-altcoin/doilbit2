@@ -40,8 +40,7 @@ function BuyOrderForm() {
     useEffect(() => {
         setPrice(buyOrder.price);
         setQuantity(buyOrder.quantity);
-    }, [buyOrder]);
-    
+    }, [buyOrder]); // buyorder 
 
     return (
 

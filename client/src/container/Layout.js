@@ -13,7 +13,7 @@ import YdcDetail from "../components/YdcDetail"
 
 function Layout() {
     return (
-        <div class="">
+        <div>
             <header>
                 <Nav /> 
             </header>
