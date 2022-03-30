@@ -13,7 +13,7 @@ exports.trans = async(req, res, next) => {
     let buypricearr = [];
     let sellpricearr = [];
     let sellquantityarr = 0;
-    
+
     // 매도 데이터 추출
     for(let i = 0; i < selldata.length; i++) {
         if(selldata[i].sellprice != undefined) {
@@ -27,8 +27,6 @@ exports.trans = async(req, res, next) => {
             buydataarr.push(buydata[i])
         }
     }
-
-
 
     // 매수 최고가 구하기
     for(i = 0; i < data.length; i++) {
@@ -67,9 +65,7 @@ exports.trans = async(req, res, next) => {
                 await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})             
             }
         }
-
   
-    
         //매수 가격중복 수량 중첩
         for(let i = 0; i < buypricearr.length; i++) {       
             if(req.body.buyprice == buydataarr[i].buyprice) {
@@ -120,7 +116,6 @@ exports.trans = async(req, res, next) => {
         await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
         await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": maxbuyprice})    
     }
-
 
      // 매도 최저가보다 높은 가격으로 매수시 매도최고가 수량 차감
 
@@ -204,8 +199,6 @@ exports.balance = (req, res, next) => {
         }
         );
 }
-
-
 
 exports.signup = (req, res, next) => {
     User.create(req.body)

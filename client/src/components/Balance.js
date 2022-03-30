@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 function Balance({}) {
-
     const [balance, setBalance] = useState(0);
     const userId = "623943499d5531c4f1bcb8a8";
 
@@ -46,7 +45,6 @@ function Balance({}) {
             </p>
             </div>
         </div>
-
     );
 }
 export default Balance;

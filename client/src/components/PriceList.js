@@ -19,8 +19,6 @@ function PriceList() {
          
     }
 
-
-
     useEffect(() => {
         buyApi()
         sellApi()
@@ -49,7 +47,6 @@ function PriceList() {
         <td key={index}>{row.sellprice}</td>
         </div>
             )
-
 
     return (
         <> 
