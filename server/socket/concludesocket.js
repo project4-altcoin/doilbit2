@@ -5,7 +5,6 @@ const socket = new WebSocket.Server({
 })
 
 const concludesocket = async() => {
-
         await axios.get("http://localhost:3001/exchange/conclude")
         .then(res => {
             let con = res.data
