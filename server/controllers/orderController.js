@@ -73,7 +73,7 @@ exports.trans = async(req, res, next) => {
                 await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
             }
         }
-    
+ 
     // 매도로직 시작(매수 최고가 필요)
     if(req.body.sellprice == maxbuyprice) {
         if(buyquantityarr - req.body.sellquantity == 0) {
@@ -124,12 +124,29 @@ exports.trans = async(req, res, next) => {
         await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": minsellprice})
     }
 
-    console.log("sellpricearr : ", sellpricearr.includes(parseInt(req.body.sellprice)))
-    console.log(req.body.sellprice)
-    console.log(sellpricearr)
+    // 매도 가격중복 수량 중첩
+           for(let i = 0; i < sellpricearr.length; i++) {       
+            if(req.body.sellprice == selldataarr[i].sellprice) {
+                let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
+                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})             
+            }
+        }
 
-    if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
-        // if(sellpricearr.includes(parseInt(req.body.sellprice)) == false) {
+    //매수 가격중복 수량 중첩
+        for(let i = 0; i < buypricearr.length; i++) {       
+            if(req.body.buyprice == buydataarr[i].buyprice) {
+                let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
+                await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+            }
+        }
+
+    console.log("sellpricearr : ", sellpricearr.includes(parseInt(req.body.sellprice)))
+    console.log("buypricearr : ", buypricearr.includes(parseInt(req.body.buyprice)))
+    console.log("sellpricearr : ", sellpricearr)
+    console.log("req.body.buyprice : ", req.body.buyprice)
+
+    // if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
+        if(sellpricearr.includes(parseInt(req.body.buyprice)) == false && buypricearr.includes(parseInt(req.body.buyprice)) == false && sellpricearr.includes(parseInt(req.body.sellprice)) == false && buypricearr.includes(parseInt(req.body.sellprice)) == false) {
         OrdersAll.create(req.body)
             .then(order => {         
                 res.status(201).json({
@@ -143,7 +160,7 @@ exports.trans = async(req, res, next) => {
                     message: err
             });
         });
-    }
+    } 
 }
 
 exports.deposit = (req, res, next) => {
