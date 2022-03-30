@@ -16,11 +16,10 @@ function Concludelist() {
     // ConcludeApi();
     const socket= new WebSocket('ws://127.0.0.1:8083');
       socket.onmessage=(e)=>{ 
-          const con = JSON.parse(e.data)
+        const con = JSON.parse(e.data)
         setConcludedata([...con])
         console.log(con)
       }  
-
   },[]);
 
     var conprice = concludedata.map((row, index) => 
