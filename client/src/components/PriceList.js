@@ -7,6 +7,7 @@ function PriceList() {
     const [buydata, setBuydata] = useState([]);
     const [selldata, setSelldata] = useState([]);
 
+
     const buyApi = async() => {
         const response = await axios.get("http://localhost:3001/exchange/buyapi")
          setBuydata(response.data)
@@ -17,6 +18,8 @@ function PriceList() {
         setSelldata(response.data)
          
     }
+
+
 
     useEffect(() => {
         buyApi()
