@@ -1,25 +1,29 @@
-// const axios = require("axios")
-// const WebSocket = require('ws');
-// const socket = new WebSocket.Server({
-//     port:8083
-// })
+const axios = require("axios")
+const WebSocket = require('ws');
+const socket = new WebSocket.Server({
+    port:8083
+})
 
-// const concludesocket = async() => {
-
-//         await axios.get("http://localhost:3001/exchange/conclude")
-//         .then(res => {
-//             let con = res.data
-//             console.log(con)
-//             socket.clients.forEach(e=> e.send(JSON.stringify(con)))
-//         })
-//         .catch((err) => console.log(err));
+const concludesocket = async() => {
+        
+        
+        await axios.get("http://localhost:3001/exchange/conclude")
+        .then(res => {
+            let con = res.data
+            console.log(con)
+            socket.clients.forEach(e=> e.send(JSON.stringify(con)))
+        })
+        .catch((err) => console.log(err));
     
-// }
+}
 
-// socket.on('connection', (ws, req)=>{
-//     concludesocket();
+socket.on('connection', (ws, req)=>{
+    
 
-//     console.log("concludesocket에 client 접속")
-// })
+    console.log("concludesocket에 client 접속")
+    ws.on("message", message => {
+        message.concludesocket();
+    })
+})
 
-// module.exports = concludesocket
+module.exports = concludesocket
