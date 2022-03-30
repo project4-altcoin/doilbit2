@@ -4,7 +4,7 @@ const socket = new WebSocket.Server({
     port:8081
 })
 function getbalance() {
-    //const userId = "623943499d5531c4f1bcb8a8";
+    const userId = "623943499d5531c4f1bcb8a8";
 
         axios.post("http://localhost:3001/exchange/balance")
             .then(res => {
