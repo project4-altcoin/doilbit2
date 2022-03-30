@@ -27,7 +27,9 @@ function BuyOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(buyOrder);
-        axios.post("http://localhost:3001/exchange/trans", buyOrder)
+        axios.post("http://localhost:3001/exchange/trans", buyOrder).then(res =>{
+        const socket= new WebSocket('ws://127.0.0.1:8083');
+        })
         
     };
 
