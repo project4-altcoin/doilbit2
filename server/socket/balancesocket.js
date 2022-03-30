@@ -18,7 +18,7 @@ function getbalance() {
 
 
 socket.on('connection', (ws, req)=>{
-    console.log("websocket에 client 접속")
+    console.log("balancesocket에 client 접속")
     getbalance();
 })
 

@@ -45,7 +45,7 @@ const pricesocket = async() => {
 socket.on('connection', (ws, req)=>{
     pricesocket();
 
-    console.log("websocket에 client 접속")
+    console.log("pricesocket에 client 접속")
     ws.on("message", (msg) => {
         
     })

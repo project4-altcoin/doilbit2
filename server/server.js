@@ -18,11 +18,13 @@ const apiV3 = process.env.API_URL_V3
 const apiV2 = process.env.API_URL_V2
 const Orders = require('./routes/Orders');
 
-const balancesocket = require("./balancesocket")
-const pricesocket = require("./pricesocket")
+const balancesocket = require("./socket/balancesocket")
+const pricesocket = require("./socket/pricesocket")
+const concludesocket = require("./socket/concludesocket")
+
 balancesocket();
 pricesocket();
-
+concludesocket();
 
 
 app.use(cors(corsOptions));

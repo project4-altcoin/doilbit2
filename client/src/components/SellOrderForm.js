@@ -27,7 +27,7 @@ function SellOrderForm() {
         axios.post("http://localhost:3001/exchange/trans", ordersAll).then( ()=>
             {
                 const socket= new WebSocket('ws://127.0.0.1:8082');
-               
+                const socket2= new WebSocket('ws://127.0.0.1:8083');
             }
             
         )
