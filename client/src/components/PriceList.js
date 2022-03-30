@@ -21,7 +21,7 @@ function PriceList() {
 
 
     useEffect(() => {
-      const socket= new WebSocket('ws://127.0.0.1:8082');
+      const socket= new WebSocket('ws://49.50.172.129:8082');
                 socket.onmessage=(e)=>{ 
                     const buyprice = JSON.parse(e.data).buy
                     setBuydata(buyprice)

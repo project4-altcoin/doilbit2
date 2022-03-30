@@ -16,8 +16,8 @@ const concludesocket = async() => {
 }
 
 socket.on('connection', (ws, req)=>{
-    concludesocket();
     console.log("concludesocket에 client 접속")
+    concludesocket();
 })
 
 module.exports = concludesocket
