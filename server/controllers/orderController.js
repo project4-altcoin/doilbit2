@@ -58,45 +58,6 @@ exports.trans = async(req, res, next) => {
     }
 
     //로직 실행 
-        // 매도 가격중복 수량 중첩
-        for(let i = 0; i < sellpricearr.length; i++) {       
-            if(req.body.sellprice == selldataarr[i].sellprice) {
-                let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
-                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
-                .then(order => {         
-                    res.status(201).json({
-                        status: 'success',
-                        order                
-                    });
-                })
-                .catch(err => {
-                    res.status(400).json({
-                        status: 'fail',
-                        message: err
-                });
-            })             
-            }
-        }
-  
-        //매수 가격중복 수량 중첩
-        for(let i = 0; i < buypricearr.length; i++) {       
-            if(req.body.buyprice == buydataarr[i].buyprice) {
-                let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
-                await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
-                .then(order => {         
-                    res.status(201).json({
-                        status: 'success',
-                        order                
-                    });
-                })
-                .catch(err => {
-                    res.status(400).json({
-                        status: 'fail',
-                        message: err
-                });
-            })
-            }
-        }
  
     // 매도로직 시작(매수 최고가 필요)
     if(req.body.sellprice == maxbuyprice) {
