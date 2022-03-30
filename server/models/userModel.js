@@ -57,6 +57,48 @@ userSchema.pre('save', async function(next) {                 // 암호화된 �
 userSchema.methods.correctPassword = async function(typedPassword, userPassword) {  // 사용자가 입력한 비밀번호와 암호화된 비밀번호를 비교하는 함수
     return await bcrypt.compare(typedPassword, userPassword);                       // 입력한 비밀번호와 암호화된 비밀번호를 비교한다.
 }
+userSchema.methods.login = function() {
+    return {
+        _id: this._id,
+        token: this.token,
+        email: this.email,
+        balance: this.balance
+    }
+}
+
+
+userSchema.methods.validateEmail = function(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+userSchema.methods.validatePassword = function(password) {
+    const re = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    return re.test(String(password));
+}
+
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email });
+    if(!user) {
+        throw new Error('Unable to login');
+    }
+    const isMatch = await user.correctPassword(password, user.password);
+    if(!isMatch) {
+        throw new Error('Unable to login');
+    }
+    return user;
+}
+
+userSchema.statics.findByUserId = async (userId) => {
+    const user = await User.findOne({ userId });
+    if(!user) {
+        throw new Error('Unable to login');
+    }
+    return user;
+}
+
+
+
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

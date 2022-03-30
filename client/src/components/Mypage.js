@@ -1,32 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {useContext} from "react";
+import {idContext} from "../context/idContext";
 
-function Balance({}) {
+
+function Mypage({}) {
+    const { id } = useContext(idContext);
+    console.log("Context id: ", id);
 
     const [balance, setBalance] = useState(0);
     const userId = "623943499d5531c4f1bcb8a8";
 
-    const api = async() => {
-        await axios.all([
-            axios.get('http://localhost:3001/api/v1/login'),
-            axios.get('http://localhost:3001/api/v1/logout')
-        ])
-        .then(axios.spread((login, logout) => {
-            console.log(login);
-            console.log(logout);
-        }
-        ))
-        .catch(err => {
-            console.log(err);
-        }
-        );
-    };
     useEffect(() => {
-        api();
-    }, []);
 
-    useEffect(() => {
        axios.post("http://localhost:3001/exchange/balance", { userId })
             .then(res => {
                 console.log(res);
@@ -49,4 +36,4 @@ function Balance({}) {
 
     );
 }
-export default Balance;
+export default Mypage;
