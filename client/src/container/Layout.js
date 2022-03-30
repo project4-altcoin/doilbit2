@@ -35,9 +35,6 @@ function Layout() {
                                 <Concludelist />
                         </div> 
                     </div>                                                          
-                        <div class="col-span-1">
-                        <Signup />                        
-                        </div>
                     </div>
                  
             </body>
