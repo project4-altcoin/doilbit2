@@ -62,7 +62,19 @@ exports.trans = async(req, res, next) => {
         for(let i = 0; i < sellpricearr.length; i++) {       
             if(req.body.sellprice == selldataarr[i].sellprice) {
                 let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
-                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})             
+                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+                .then(order => {         
+                    res.status(201).json({
+                        status: 'success',
+                        order                
+                    });
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        status: 'fail',
+                        message: err
+                });
+            })             
             }
         }
   
@@ -71,6 +83,18 @@ exports.trans = async(req, res, next) => {
             if(req.body.buyprice == buydataarr[i].buyprice) {
                 let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
                 await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+                .then(order => {         
+                    res.status(201).json({
+                        status: 'success',
+                        order                
+                    });
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        status: 'fail',
+                        message: err
+                });
+            })
             }
         }
  
@@ -97,10 +121,34 @@ exports.trans = async(req, res, next) => {
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
             await OrdersAll.deleteOne({buyquantity : buyquantityarr})
             await concludeList.insertMany({"conquantity": buyquantityarr, "conprice": req.body.sellprice}) 
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+            });
+        })
         } else if(buyquantityarr - req.body.sellquantity > 0) {
            //매수 디비 데이터 갱신          
            await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
-           await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})        
+           await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})
+           .then(order => {         
+            res.status(201).json({
+                status: 'success',
+                order                
+            });
+        })
+        .catch(err => {
+            res.status(400).json({
+                status: 'fail',
+                message: err
+        });
+    })        
        }
     }
     // 매수로직 시작(매도 최저가 필요)
@@ -108,16 +156,52 @@ exports.trans = async(req, res, next) => {
         if(sellquantityarr - req.body.buyquantity == 0 ) {
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
             await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+            });
+        })
         } else if(req.body.buyquantity - sellquantityarr > 0){
             await OrdersAll.create(req.body)
             await OrdersAll.updateOne({"buyquantity" : req.body.buyquantity }, {"$set" : {"buyquantity" :req.body.buyquantity - sellquantityarr}})
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
             await concludeList.insertMany({"conquantity": sellquantityarr, "conprice": req.body.buyprice})
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+            });
+        })
 
         } else if(sellquantityarr - req.body.buyquantity > 0) {
             //매수 디비 데이터 갱신          
             await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})
-            await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})        
+            await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})
+            .then(order => {         
+                res.status(201).json({
+                    status: 'success',
+                    order                
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    status: 'fail',
+                    message: err
+            });
+        })        
         }
     }
     
@@ -125,7 +209,19 @@ exports.trans = async(req, res, next) => {
 
     if(req.body.sellprice < maxbuyprice) {
         await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
-        await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": maxbuyprice})    
+        await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": maxbuyprice})
+        .then(order => {         
+            res.status(201).json({
+                status: 'success',
+                order                
+            });
+        })
+        .catch(err => {
+            res.status(400).json({
+                status: 'fail',
+                message: err
+        });
+    })    
     }
 
      // 매도 최저가보다 높은 가격으로 매수시 매도최고가 수량 차감
@@ -133,13 +229,37 @@ exports.trans = async(req, res, next) => {
      if(req.body.buyprice > minsellprice) {
         await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}}) 
         await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": minsellprice})
+        .then(order => {         
+            res.status(201).json({
+                status: 'success',
+                order                
+            });
+        })
+        .catch(err => {
+            res.status(400).json({
+                status: 'fail',
+                message: err
+        });
+    })
     }
 
     // 매도 가격중복 수량 중첩
            for(let i = 0; i < sellpricearr.length; i++) {       
             if(req.body.sellprice == selldataarr[i].sellprice) {
                 let resetsellquantity = parseInt(req.body.sellquantity) + parseInt(selldataarr[i].sellquantity)
-                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})             
+                await OrdersAll.updateOne({"sellprice" : req.body.sellprice }, {"$set" : {"sellquantity" :resetsellquantity}})
+                .then(order => {         
+                    res.status(201).json({
+                        status: 'success',
+                        order                
+                    });
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        status: 'fail',
+                        message: err
+                });
+            })             
             }
         }
 
@@ -148,6 +268,18 @@ exports.trans = async(req, res, next) => {
             if(req.body.buyprice == buydataarr[i].buyprice) {
                 let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
                 await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+                .then(order => {         
+                    res.status(201).json({
+                        status: 'success',
+                        order                
+                    });
+                })
+                .catch(err => {
+                    res.status(400).json({
+                        status: 'fail',
+                        message: err
+                });
+            })
             }
         }
 
