@@ -22,20 +22,28 @@ function Balance({}) {
         }
         );
     };
+
     useEffect(() => {
+        
+        const socket= new WebSocket('ws://49.50.172.129:8081');
+        socket.onmessage=(e)=>{ 
+            
+            setBalance(e.data)
+            console.log(e.data)
+        }
         api();
     }, []);
 
-    useEffect(() => {
-       axios.post("http://localhost:3001/exchange/balance", { userId })
-            .then(res => {
-                console.log(res);
-                setBalance(res.data.quantity);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, []);
+    // useEffect(() => {
+    //    axios.post("http://localhost:3001/exchange/balance", { userId })
+    //         .then(res => {
+    //             console.log(res);
+    //             setBalance(res.data.quantity);
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }, []);
 
     return (
         <div class="flex items-center justify-center bg-green-400">              
