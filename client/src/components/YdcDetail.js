@@ -69,13 +69,6 @@ function YdcDetail() {
 
     return (
         <>
-        {/* <div>
-        <p>거래량 : {Tq}YDC</p>
-        </div>
-        현재가 : {currentpricemap} <br />
-        고가 : {highpricemap} <br />
-        저가 : {lowpricemap} <br />
-        거래대금 : {Tp} KRW */}
         <div class="max-w-2xl mx-auto">
 
 <div class="p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
@@ -157,10 +150,6 @@ function YdcDetail() {
     </ul>
 </div>
 </div>
-{/* <p class="mt-5">This card component is part of a larger, open-source library of Tailwind CSS components. Learn more
-    by going to the official <a class="text-blue-600 hover:underline"
-        href="https://flowbite.com/docs/getting-started/introduction/" target="_blank">Flowbite Documentation</a>.
-</p> */}
 </div>
         </>
     )
