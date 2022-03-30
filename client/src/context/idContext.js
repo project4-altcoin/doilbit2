@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react';
-
 const idContext = createContext();
 
 const IdProvider = ({children}) => {                // 칠드런 코드 : 
@@ -13,8 +12,6 @@ const IdProvider = ({children}) => {                // 칠드런 코드 :
             token: ''
         }
     ]);
-
-    
 
     return (
         <idContext.Provider value={{id: id}}>
