@@ -75,3 +75,17 @@ exports.currentprice = async (req, res, next) => {
 }
 }
 
+exports.currentprice2 = async (req, res, next) => {
+    try{
+        const currentprice = await concludeList.find({}, {"_id":false, "conprice":true}).sort({ createdAt: -1 })
+        const data = [];
+        for(let i = 0; i < 10; i++) {
+            data.push(currentprice[i]);
+        }
+        let datas = data.reverse()
+        res.send(datas)
+        } catch(err) {
+        console.error(err);
+}
+}
+

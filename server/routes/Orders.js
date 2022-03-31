@@ -19,5 +19,6 @@ router.get("/highprice", conlistController.highprice)
 router.get("/lowprice", conlistController.lowprice)
 router.get("/totalquantity", conlistController.totalquantity)
 router.get("/currentprice", conlistController.currentprice)
+router.get("/currentprice2", conlistController.currentprice2)
 
 module.exports = router;
