@@ -8,11 +8,20 @@ exports.trans = async(req, res, next) => {
     let selldata = await OrdersAll.find({}, {"sellprice":true, "sellquantity":true})
     let selldataarr = [];
     let buydata = await OrdersAll.find({}, {"buyprice":true, "buyquantity":true})
+    let depositdata = await bank.find({})
+    let depositdataarr = [];
     let buydataarr = [];
     let buyquantityarr = 0;
     let buypricearr = [];
     let sellpricearr = [];
     let sellquantityarr = 0;
+    
+     // 현재 잔액 추출
+    for(let i = 0; i < depositdata.length; i++){
+        depositdataarr.push(depositdata[i].quantity)
+    }   
+
+
 
     // 매도 데이터 추출
     for(let i = 0; i < selldata.length; i++) {
@@ -71,6 +80,7 @@ exports.trans = async(req, res, next) => {
             await bank.findOneAndUpdate({userId: userId}, {$set: {quantity: quantityPlusProfit}})
             console.log("매도 성공: ", req.body.sellquantity, "주를", req.body.sellprice, "원으로 매도하였습니다.", "수익: ", profit)
             await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})
+            await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) + parseInt((req.body.sellprice * req.body.sellquantity))}})
             .then(order => {         
                 res.status(201).json({
                     status: 'success',
@@ -88,6 +98,7 @@ exports.trans = async(req, res, next) => {
             await OrdersAll.updateOne({"sellquantity" : req.body.sellquantity }, {"$set" : {"sellquantity" :req.body.sellquantity - buyquantityarr}})
             await OrdersAll.deleteOne({buyquantity : buyquantityarr})
             await concludeList.insertMany({"conquantity": buyquantityarr, "conprice": req.body.sellprice}) 
+            await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) + parseInt((req.body.sellprice * (req.body.sellquantity - buyquantityarr)))}})
             .then(order => {         
                 res.status(201).json({
                     status: 'success',
@@ -104,6 +115,7 @@ exports.trans = async(req, res, next) => {
            //매수 디비 데이터 갱신          
            await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
            await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})
+           await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) + parseInt((req.body.sellprice * req.body.sellquantity))}})
            .then(order => {         
             res.status(201).json({
                 status: 'success',
@@ -123,6 +135,7 @@ exports.trans = async(req, res, next) => {
         if(sellquantityarr - req.body.buyquantity == 0 ) {
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
             await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})
+            await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) - parseInt((req.body.buyprice * req.body.buyquantity))}})
             .then(order => {         
                 res.status(201).json({
                     status: 'success',
@@ -140,6 +153,7 @@ exports.trans = async(req, res, next) => {
             await OrdersAll.updateOne({"buyquantity" : req.body.buyquantity }, {"$set" : {"buyquantity" :req.body.buyquantity - sellquantityarr}})
             await OrdersAll.deleteOne({sellquantity : sellquantityarr})
             await concludeList.insertMany({"conquantity": sellquantityarr, "conprice": req.body.buyprice})
+            await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) - parseInt((req.body.buyprice * sellquantityarr))}})
             .then(order => {         
                 res.status(201).json({
                     status: 'success',
@@ -157,6 +171,7 @@ exports.trans = async(req, res, next) => {
             //매수 디비 데이터 갱신          
             await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}})
             await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": req.body.buyprice})
+            await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) - parseInt((req.body.buyprice * req.body.buyquantity))}})
             .then(order => {         
                 res.status(201).json({
                     status: 'success',
@@ -177,6 +192,7 @@ exports.trans = async(req, res, next) => {
     if(req.body.sellprice < maxbuyprice) {
         await OrdersAll.updateOne({"buyquantity" : buyquantityarr }, {"$set" : {"buyquantity" :buyquantityarr - req.body.sellquantity}}) 
         await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": maxbuyprice})
+        await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) + parseInt((req.body.sellprice * req.body.sellquantity))}})
         .then(order => {         
             res.status(201).json({
                 status: 'success',
@@ -196,6 +212,7 @@ exports.trans = async(req, res, next) => {
      if(req.body.buyprice > minsellprice) {
         await OrdersAll.updateOne({"sellquantity" : sellquantityarr }, {"$set" : {"sellquantity" :sellquantityarr - req.body.buyquantity}}) 
         await concludeList.insertMany({"conquantity": req.body.buyquantity, "conprice": minsellprice})
+        await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) - parseInt((req.body.buyprice * req.body.buyquantity))}})
         .then(order => {         
             res.status(201).json({
                 status: 'success',
@@ -235,6 +252,7 @@ exports.trans = async(req, res, next) => {
             if(req.body.buyprice == buydataarr[i].buyprice) {
                 let resetbuyquantity = parseInt(req.body.buyquantity) + parseInt(buydataarr[i].buyquantity)
                 await OrdersAll.updateOne({"buyprice" : req.body.buyprice }, {"$set" : {"buyquantity" :resetbuyquantity}})
+                await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) - parseInt((req.body.buyprice * req.body.buyquantity))}})
                 .then(order => {         
                     res.status(201).json({
                         status: 'success',
@@ -250,10 +268,6 @@ exports.trans = async(req, res, next) => {
             }
         }
 
-    console.log("sellpricearr : ", sellpricearr.includes(parseInt(req.body.sellprice)))
-    console.log("buypricearr : ", buypricearr.includes(parseInt(req.body.buyprice)))
-    console.log("sellpricearr : ", sellpricearr)
-    console.log("req.body.buyprice : ", req.body.buyprice)
 
     // if(req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice) {
         if(sellpricearr.includes(parseInt(req.body.buyprice)) == false && buypricearr.includes(parseInt(req.body.buyprice)) == false && sellpricearr.includes(parseInt(req.body.sellprice)) == false && buypricearr.includes(parseInt(req.body.sellprice)) == false) {

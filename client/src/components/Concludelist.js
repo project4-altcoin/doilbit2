@@ -14,11 +14,11 @@ function Concludelist() {
 
   useEffect(() => {
     // ConcludeApi();
-    const socket= new WebSocket('ws://49.50.172.129:8083');
+    // const socket= new WebSocket('ws://49.50.172.129:8083');
+    const socket= new WebSocket('ws://127.0.0.1:8083');
       socket.onmessage=(e)=>{ 
         const con = JSON.parse(e.data)
         setConcludedata([...con])
-        console.log(con)
       }  
   },[]);
 
@@ -42,7 +42,7 @@ function Concludelist() {
     return (
         <> 
         <div> 
-        <p class="text-gray-700 text-xl font-semibold">요들코인 체결내역</p>
+        <p style={{color:'black', fontWeight:"bold", fontSize:20}}>요들코인 체결내역</p>
         <br />        
         <table class="min-w-full bg-white">
       <thead class="bg-gray-800 text-white">
