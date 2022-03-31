@@ -13,16 +13,13 @@ import { useState, useEffect } from "react";
 export default function YDCChart() {
   var array = [];
   const [concludeprice, setConcludeprice] = useState([])
-    const ConcludeApi = async() => {
-      const response = await axios.get("http://localhost:3001/exchange/currentprice2")
-      // array.push(response.data)
-      for(let i = 0; i < 10; i++){ 
-      array.push(response.data[i].conprice)      
-      }
-      setConcludeprice(array)  
-  }
+  
   useEffect(() => {
-    ConcludeApi();        
+    const socket= new WebSocket('ws://127.0.0.1:8085');
+        socket.onmessage=(e)=>{ 
+          const array = JSON.parse(e.data)
+          setConcludeprice(array)       
+        }  
   },[]);
 console.log(concludeprice[0])
 

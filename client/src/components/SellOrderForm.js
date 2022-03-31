@@ -32,6 +32,7 @@ function SellOrderForm() {
             const socket1= new WebSocket('ws://127.0.0.1:8082');
             const socket2= new WebSocket('ws://127.0.0.1:8083');
             const socket3= new WebSocket('ws://127.0.0.1:8084');
+            const socket4= new WebSocket('ws://127.0.0.1:8085');
         })
     }
 
