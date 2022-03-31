@@ -14,6 +14,7 @@ function Concludelist() {
 
   useEffect(() => {
     // ConcludeApi();
+    //const socket= new WebSocket('ws://49.50.172.129:8081');
     const socket= new WebSocket('ws://49.50.172.129:8083');
       socket.onmessage=(e)=>{ 
         const con = JSON.parse(e.data)
