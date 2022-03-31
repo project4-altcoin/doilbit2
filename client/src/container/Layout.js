@@ -9,16 +9,20 @@ import Balance from "../components/Balance";
 import Concludelist from "../components/Concludelist";
 import PriceList from "../components/PriceList";
 import YdcDetail from "../components/YdcDetail"
+import Footer from "../components/Footer";
+import YDCChart from "../components/Chart";
+
 
 
 function Layout() {
     return (
-        <div>
+        <div >
             <header>
                 <Nav /> 
             </header>
-                <body class="min-h-screen flex justify-center place-content-start place-item-start pt-16 ">
-                    <div class="container mx-auto">   
+                <body class="min-h-screen flex justify-center place-content-start place-item-start pt-16" style={{backgroundColor:"#F1FCEC"}}>
+                    <div class="container mx-auto">
+                        <YDCChart />
                         <div class="grid grid-cols-5 md:grid-cols-5 gap-4 p-5 ">        
                             <BuyOrderForm />
                             <SellOrderform />
@@ -26,18 +30,21 @@ function Layout() {
                             <Withdraw /> 
                             <Balance />
                             </div>
-                            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '70vh', }}>  
+                            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '70vh'}}>  
                             <YdcDetail />
-                            <div style={{margin:"120px"}}>                  
+                            <div style={{margin:"120px", marginBottom:"155px"}}>                  
                             <PriceList />
                             </div>
-                            <div style={{margin:"100px"}}>
+                            <div style={{margin:"130px", marginBottom:"195px"}}>
                                 <Concludelist />
                         </div> 
                     </div>                                                          
                     </div>
-                 
             </body>
+            <footer>
+                <Footer />
+            </footer>
+
         </div>
     )
 }

@@ -21,7 +21,8 @@ function PriceList() {
 
 
     useEffect(() => {
-      const socket= new WebSocket('ws://49.50.172.129:8082');
+      // const socket= new WebSocket('ws://49.50.172.129:8082');
+      const socket= new WebSocket('ws://127.0.0.1:8082');
                 socket.onmessage=(e)=>{ 
                     const buyprice = JSON.parse(e.data).buy
                     setBuydata(buyprice)
@@ -58,9 +59,8 @@ function PriceList() {
     return (
         <> 
         <div> 
-        <p class="text-gray-700 text-xl font-semibold">요들코인 호가창</p>
-        <br />        
-        <table class="relative border">
+        <p style={{color:'black', fontWeight:"bold", fontSize:20}}>요들코인 호가창</p>
+        <table class="min-w-full bg-white">
         <thead>
           <tr>
             <th class="sticky top-0 px-6 py-3">수량</th>
