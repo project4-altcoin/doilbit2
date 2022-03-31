@@ -28,8 +28,8 @@ function Withdraw() {
         console.log("front : ", withdrawMoney);
         axios.post("http://localhost:3001/exchange/withdraw", withdrawMoney).then(res => {
             console.log(res);
-            //const socket= new WebSocket('ws://49.50.172.129:8081');
-            const socket= new WebSocket('ws://49.50.172.129:8081');
+            // const socket= new WebSocket('ws://49.50.172.129:8081');
+            const socket= new WebSocket('ws://127.0.0.1:8081');
             alert('출금이 완료되었습니다.')
         })
     }
@@ -48,7 +48,7 @@ function Withdraw() {
                         </div>
                     <br />
                         <form class="" action="/exchange/withdraw" method="post">
-                            <label>금액: <input class="bg-green-400 text-black" type="text" name="quantity" value={quantity} onChange={handleChange} /></label><br /><br />
+                            <label>금액: <input class="bg-white-300 text-black" type="text" name="quantity" value={quantity} onChange={handleChange} /></label><br /><br />
                         <p class="text-gray-700 text-xl font-semibold">
                             KRW :  {quantity}
                         </p><br />
@@ -59,6 +59,7 @@ function Withdraw() {
                     </p>
                 </div>
             </div>
+    
     )
 }
 
