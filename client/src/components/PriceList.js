@@ -33,25 +33,41 @@ function PriceList() {
 
     var buyquantity = buydata.map((row, index) => 
     <div>
-        <td key={index}>{row.buyquantity}</td>
+        <div class="w-full rounded-full h-2.5 " style={{transform: "scalex(-1)"}}>
+            <div class="bg-red-600 h-2.5 rounded-full" style={{width: `calc(0.2%*${row.buyquantity})`}}></div>
         </div>
+        <td key={index}>{row.buyquantity}</td>
+    </div>
             )
 
     var sellquantity = selldata.map((row, index) => 
     <div>
-        <td key={index}>{row.sellquantity}</td>
+        
+        <td key={index}>
+          {row.sellquantity}
+          <div class="w-full rounded-full h-2.5 ">
+          <div class="bg-blue-600 h-2.5 rounded-full" style={{width: `calc(0.3%*${row.sellquantity})`}}></div>
         </div>
+          </td>
+    </div>
             )
 
     var buyprice = buydata.map((row, index) => 
     <div>
+        <div class="w-full" style={{transform: "scalex(-1)"}}>
+            <div class="h-2.5 rounded-full" ></div>
+        </div>
         <td key={index}>{row.buyprice}</td>
         </div>
             )
 
     var sellprice = selldata.map((row, index) => 
     <div>
+     
         <td key={index}>{row.sellprice}</td>
+        <div class="w-full" style={{transform: "scalex(-1)"}}>
+            <div class="h-2.5 rounded-full" ></div>
+        </div>
         </div>
             )
 
@@ -59,9 +75,10 @@ function PriceList() {
     return (
         <> 
         <div> 
-        <p class="text-gray-700 text-xl font-semibold">요들코인 호가창</p>
+        
         <br />        
-        <table class="relative border">
+        <p style={{color:'black', fontWeight:"bold", fontSize:20}}>요들코인 호가창</p>
+        <table class="min-w-full bg-white relative border">
         <thead>
           <tr>
             <th class="sticky top-0 px-6 py-3">수량</th>
@@ -72,6 +89,7 @@ function PriceList() {
         <tbody class="divide-y bg-blue-100">
           <tr>
             <td class="px-6 py-4 text-center">{sellquantity}</td>
+            
             <td class="px-6 py-4 text-center">{sellprice}</td>
             <td></td>
           </tr>

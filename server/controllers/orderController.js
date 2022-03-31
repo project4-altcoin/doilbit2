@@ -72,7 +72,13 @@ exports.trans = async(req, res, next) => {
     if(req.body.sellprice == maxbuyprice) {
         if(buyquantityarr - req.body.sellquantity == 0) {
            // 매도 매수 디비 데이터 둘다 삭제          
+           const userId = "623943499d5531c4f1bcb8a8"
+           console.log("sel data:" , req.body.sellprice, req.body.sellquantity)
+           const profit = req.body.sellquantity * req.body.sellprice
+           const quantityPlusProfit = req.body.sellquantity + profit 
             await OrdersAll.deleteOne({buyquantity : buyquantityarr})
+            await bank.findOneAndUpdate({userId: userId}, {$set: {quantity: quantityPlusProfit}})
+            console.log("매도 성공: ", req.body.sellquantity, "주를", req.body.sellprice, "원으로 매도하였습니다.", "수익: ", profit)
             await concludeList.insertMany({"conquantity": req.body.sellquantity, "conprice": req.body.sellprice})
             await bank.updateOne({"quantity": depositdataarr}, {"$set" : {"quantity" : parseInt(depositdataarr) + parseInt((req.body.sellprice * req.body.sellquantity))}})
             .then(order => {         
@@ -349,4 +355,17 @@ exports.signup = (req, res, next) => {
                 message: err
             });
         });
+}
+
+
+// unix time stamp to date
+function unixtodate(unixtime) {
+    var date = new Date(unixtime * 1000);
+    var year = date.getFullYear();
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+    var hour = ("0" + date.getHours()).slice(-2);
+    var min = ("0" + date.getMinutes()).slice(-2);
+    var sec = ("0" + date.getSeconds()).slice(-2);
+    return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
 }

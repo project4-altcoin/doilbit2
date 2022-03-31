@@ -24,11 +24,13 @@ const balancesocket = require("./socket/balancesocket")
 const pricesocket = require("./socket/pricesocket")
 const concludesocket = require("./socket/concludesocket")
 const detailsocket = require("./socket/detailsocket")
+const chartsocket = require("./socket/chartsocket")
 
 balancesocket();
 pricesocket();
 concludesocket();
 detailsocket();
+chartsocket();
 
 app.use(cookieParser())
 app.use(cors(corsOptions));
