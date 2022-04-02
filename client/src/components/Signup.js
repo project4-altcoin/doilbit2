@@ -66,9 +66,7 @@ const Signup = () => {
                             <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>Signup</button>
                             </div>
                         </p>
-                    </form>
-                   
-                        
+                    </form>                       
           </div>
                 </div>
         </div>
