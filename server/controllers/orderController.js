@@ -309,8 +309,8 @@ exports.trans = async(req, res, next) => {
         && buypricearr.includes(parseInt(req.body.buyprice)) == false 
         && sellpricearr.includes(parseInt(req.body.sellprice)) == false 
         && buypricearr.includes(parseInt(req.body.sellprice)) == false
-        && req.body.sellprice > maxbuyprice
-        && req.body.buyprice < minsellprice) {
+        && (req.body.sellprice > maxbuyprice || req.body.buyprice < minsellprice)
+       ) {
         OrdersAll.create(req.body)
             .then(order => {         
                 res.status(201).json({
