@@ -11,23 +11,23 @@ function YdcDetail() {
     let Tq = 0;
     let Tp = 0;
 
-    const totalquantity = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/totalquantity")
-        setTquantity(response.data)         
-    }
-    const highprice = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/highprice") 
-        setHp(response.data)       
-    }
-    const lowprice = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/lowprice") 
-        setLp(response.data)       
-    }
+    // const totalquantity = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/totalquantity")
+    //     setTquantity(response.data)         
+    // }
+    // const highprice = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/highprice") 
+    //     setHp(response.data)       
+    // }
+    // const lowprice = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/lowprice") 
+    //     setLp(response.data)       
+    // }
 
-    const currentprice = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/currentprice") 
-        setCp(response.data)       
-    }
+    // const currentprice = async() => {
+    //     const response = await axios.get("http://localhost:3001/exchange/currentprice") 
+    //     setCp(response.data)       
+    // }
 
     // 모든 거래내역의 거래량 합산
     for(let i = 0; i < Tquantity.length; i++) {
@@ -41,10 +41,15 @@ function YdcDetail() {
 
 
     useEffect(() => {
-        totalquantity()
-        highprice()
-        lowprice()
-        currentprice()
+        // const socket= new WebSocket('ws://49.50.172.129:8084');
+        const socket= new WebSocket('ws://127.0.0.1:8084');
+        socket.onmessage=(e)=>{ 
+            const detail = JSON.parse(e.data)
+            setTquantity(detail.tq)
+            setHp(detail.hp)
+            setLp(detail.lp)
+            setCp(detail.cp)
+        }
     },[]);
 
 

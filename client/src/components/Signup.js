@@ -38,7 +38,6 @@ const Signup = () => {
             });
     };
 
-
     useEffect(() => {
         setUserId(user.userId);
         setPassword(user.password);
@@ -51,8 +50,6 @@ const Signup = () => {
     return (
         <div class="">
           <div class="bg-white rounded-lg shadow flex  justify-center">
-          
-
                 <div>
                     <form action="/signup" method="post">
                         <p class="text-gray-700 text-xl font-semibold">
@@ -69,9 +66,7 @@ const Signup = () => {
                             <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>Signup</button>
                             </div>
                         </p>
-                    </form>
-                   
-                        
+                    </form>                       
           </div>
                 </div>
         </div>

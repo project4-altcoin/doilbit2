@@ -1,19 +1,26 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 // 거래 체결 내역
 
 function Concludelist() {
-    const [concludedata, setConcludedata] = useState([]);
+  const [concludedata, setConcludedata] = useState([]);
 
-    const ConcludeApi = async() => {
-        const response = await axios.get("http://localhost:3001/exchange/conclude")
-         setConcludedata(response.data)         
-    }
+  // const ConcludeApi = async() => {
+  //     const response = await axios.get("http://localhost:3001/exchange/conclude")
+  //      setConcludedata(response.data)  
+  // }
 
-    useEffect(() => {
-        ConcludeApi()
-    },[]);
+  useEffect(() => {
+    // ConcludeApi();
+    // const socket= new WebSocket('ws://49.50.172.129:8083');
+    const socket= new WebSocket('ws://127.0.0.1:8083');
+      socket.onmessage=(e)=>{ 
+        const con = JSON.parse(e.data)
+        setConcludedata([...con])
+      }  
+  },[]);
 
     var conprice = concludedata.map((row, index) => 
     <div>
@@ -35,7 +42,7 @@ function Concludelist() {
     return (
         <> 
         <div> 
-        <p class="text-gray-700 text-xl font-semibold">요들코인 체결내역</p>
+        <p style={{color:'black', fontWeight:"bold", fontSize:20}}>요들코인 체결내역</p>
         <br />        
         <table class="min-w-full bg-white">
       <thead class="bg-gray-800 text-white">

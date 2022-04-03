@@ -27,14 +27,24 @@ function BuyOrderForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(buyOrder);
-        axios.post("http://localhost:3001/exchange/trans", buyOrder)
+        axios.post("http://localhost:3001/exchange/trans", buyOrder).then(res =>{
+        // const socket1= new WebSocket('ws://49.50.172.129:8082');
+        // const socket2= new WebSocket('ws://49.50.172.129:8083');
+        // const socket3= new WebSocket('ws://49.50.172.129:8084');
+        const socket= new WebSocket('ws://127.0.0.1:8081');
+        const socket1= new WebSocket('ws://127.0.0.1:8082');
+        const socket2= new WebSocket('ws://127.0.0.1:8083');
+        const socket3= new WebSocket('ws://127.0.0.1:8084');
+        const socket4= new WebSocket('ws://127.0.0.1:8085');
+
+        })
         
     };
 
     useEffect(() => {
         setPrice(buyOrder.price);
         setQuantity(buyOrder.quantity);
-    }, [buyOrder]);
+    }, [buyOrder]); // buyorder 
 
     return (
 
@@ -46,8 +56,8 @@ function BuyOrderForm() {
                             </div>
                             <br />
                             <form class=""action="/exchange/buy" method="post">
-                                <label>수량: <input class="bg-green-400 text-black" type="text" name="buyquantity" value={quantity} onChange={handleChange}/></label><br /><br />
-                                <label>가격: <input class="bg-green-400 text-black" type="text" name="buyprice" value={price} onChange={handleChange}/></label> <br /><br />
+                                <label>수량: <input class="" type="text" name="buyquantity" value={quantity} onChange={handleChange}/></label><br /><br />
+                                <label>가격: <input class="" type="text" name="buyprice" value={price} onChange={handleChange}/></label> <br /><br />
                                 <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                                 <button class="rounded-full py-2 px-3 bg-black text-white" onClick={handleSubmit}>매수하기</button>
                                 </div>
